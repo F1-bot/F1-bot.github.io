@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://f1-bot.github.io/sitemap.xml
