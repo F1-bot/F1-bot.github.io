@@ -39,6 +39,7 @@
             padding-top: 100px;
             display: flex;
             align-items: center;
+            min-height: 10vh;
         }
         .hero-content {
             display: flex;
@@ -56,6 +57,8 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
+            transform: translateZ(0);
+            will-change: transform;
         }
 
         @font-face {
@@ -63,19 +66,21 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url(https://fonts.gstatic.com/s/inter/v19/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2');
+            src: local('Inter Regular'), local('Inter-Regular'),
+                 url(https://fonts.gstatic.com/s/inter/v19/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2');
         }
         @font-face {
             font-family: 'Inter';
             font-style: normal;
             font-weight: 600;
             font-display: swap;
-            src: url(https://fonts.gstatic.com/s/inter/v19/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2');
+            src: local('Inter SemiBold'), local('Inter-SemiBold'),
+                 url(https://fonts.gstatic.com/s/inter/v19/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2');
         }
     </style>
 
     <!-- Preload critical assets -->
-    <link rel="preload" href="125-optimized.webp" as="image" type="image/webp">
+    <link rel="preload" href="125-optimized.webp" as="image" type="image/webp" fetchpriority="high">
     <link rel="preload" href="https://fonts.gstatic.com/s/inter/v19/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- Defer non-critical CSS -->
@@ -111,7 +116,7 @@
             <section id="hero" class="hero-section container fade-in-element">
                 <div class="hero-content">
                     <div class="hero-image-container">
-                        <img src="125-optimized.webp" alt="Photo of Serhii Dolhopolov" width="434" height="434" loading="eager" decoding="async">
+                        <img src="125-optimized.webp" alt="Photo of Serhii Dolhopolov" width="434" height="600" loading="eager" decoding="async" fetchpriority="high">
                     </div>
                     <div class="hero-text">
                         <h2>Serhii Dolhopolov, <span class="degree">Ph.D. Student</span></h2>
