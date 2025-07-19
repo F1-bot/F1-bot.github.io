@@ -101,21 +101,14 @@ document.addEventListener('DOMContentLoaded', function() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 // Set initial state for animation right before adding 'is-visible'
-                entry.target.style.opacity = '0';
-                entry.target.style.transform = 'translateY(30px)';
-                
-                // Force reflow to ensure transition applies
-                void entry.target.offsetWidth; 
-
                 entry.target.classList.add('is-visible');
-                observerInstance.unobserve(entry.target); // Animate only once
+                observerInstance.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
     fadeInElements.forEach(item => {
         // Initially hide elements that will be animated by JS
-        item.style.opacity = '0'; 
         observer.observe(item);
     });
 
@@ -123,19 +116,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const lightbox = document.getElementById('lightbox');
     if (lightbox) {
         const lightboxImage = lightbox.querySelector('.lightbox-image');
+        const lightboxLoader = lightbox.querySelector('.lightbox-loader');
         const lightboxTriggers = document.querySelectorAll('.lightbox-trigger');
         const lightboxClose = lightbox.querySelector('.lightbox-close');
 
         const openLightbox = (e) => {
             const imgSrc = e.currentTarget.querySelector('img').src;
-            lightboxImage.setAttribute('src', imgSrc);
+            
             lightbox.classList.add('active');
+            lightboxLoader.style.display = 'block';
+            lightboxImage.style.display = 'none';
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+            const img = new Image();
+            img.onload = function() {
+                // Once loaded, update the real image src and hide loader
+                lightboxImage.src = this.src;
+                lightboxLoader.style.display = 'none';
+                lightboxImage.style.display = 'block';
+            };
+            img.src = imgSrc; // Start loading
         };
 
         const closeLightbox = () => {
             lightbox.classList.remove('active');
             document.body.style.overflow = 'auto'; // Restore scrolling
+            // Reset for next open
+            setTimeout(() => {
+                lightboxImage.src = "";
+            }, 300); // Delay to allow fade-out
         };
 
         lightboxTriggers.forEach(trigger => {
