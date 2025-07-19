@@ -1,7 +1,20 @@
+// --- Preloader Logic ---
+window.onload = function() {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.classList.add('hidden');
+        // Optional: completely remove from DOM after transition
+        setTimeout(() => {
+            preloader.style.display = 'none';
+        }, 500); // Should match CSS transition duration
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     // --- Mobile navigation toggle ---
     const burgerMenu = document.querySelector('.burger-menu');
     const navLinks = document.querySelector('.nav-links');
+
     if (burgerMenu && navLinks) {
         burgerMenu.addEventListener('click', () => {
             navLinks.classList.toggle('active');
@@ -19,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
 
     // --- Email De-obfuscation ---
     const emailPlaceholder = document.getElementById('email-placeholder');
@@ -98,4 +112,38 @@ document.addEventListener('DOMContentLoaded', function() {
         item.style.opacity = '0'; 
         observer.observe(item);
     });
+
+    // --- Lightbox Logic ---
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        const lightboxImage = lightbox.querySelector('.lightbox-image');
+        const lightboxTriggers = document.querySelectorAll('.lightbox-trigger');
+        const lightboxClose = lightbox.querySelector('.lightbox-close');
+
+        const openLightbox = (e) => {
+            const imgSrc = e.currentTarget.querySelector('img').src;
+            lightboxImage.setAttribute('src', imgSrc);
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        };
+
+        const closeLightbox = () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        };
+
+        lightboxTriggers.forEach(trigger => {
+            trigger.addEventListener('click', openLightbox);
+        });
+
+        lightboxClose.addEventListener('click', closeLightbox);
+
+        // Close lightbox when clicking on the background
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+    }
+
 });
