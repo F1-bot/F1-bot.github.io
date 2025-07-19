@@ -4,191 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serhii Dolhopolov - Ph.D. Student - Research Portfolio</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Serhii Dolhopolov - Ph.D. Student at Kyiv National University of Construction and Architecture. Research portfolio in Artificial Intelligence, Machine Learning, and Computer Vision. Publications, projects, and academic achievements.">
-    <meta name="keywords" content="Serhii Dolhopolov, Ph.D. Student, Artificial Intelligence, Machine Learning, Computer Vision, Neural Networks, Research, Kyiv National University of Construction and Architecture">
-    <meta name="author" content="Serhii Dolhopolov">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Serhii Dolhopolov - Ph.D. Student - Research Portfolio">
-    <meta property="og:description" content="Research portfolio in Artificial Intelligence, Machine Learning, and Computer Vision. Publications, projects, and academic achievements.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://f1-bot.github.io">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Serhii Dolhopolov - Ph.D. Student - Research Portfolio">
-    <meta name="twitter:description" content="Research portfolio in Artificial Intelligence, Machine Learning, and Computer Vision. Publications, projects, and academic achievements.">
-    
-    <!-- Critical CSS -->
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-        }
-        .page-wrapper {
-            min-height: 100vh;
-        }
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #333;
-            text-decoration: none;
-            display: inline-block;
-            transform: translateZ(0);
-            will-change: transform;
-            position: relative;
-            z-index: 1;
-        }
-        .logo a {
-            color: inherit;
-            text-decoration: none;
-            display: inline-block;
-            position: relative;
-            z-index: 2;
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 2rem;
-            line-height: 1;
-            padding: 0.5rem;
-            border-radius: 4px;
-        }
-        .logo a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -1;
-            border-radius: 4px;
-        }
-        .hero-section {
-            padding-top: 100px;
-            display: flex;
-            align-items: center;
-            min-height: 10vh;
-            position: relative;
-        }
-        .hero-content {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            position: relative;
-        }
-        .hero-image-container {
-            width: 434px;
-            height: 600px;
-            position: relative;
-            overflow: hidden;
-            transform: translateZ(0);
-            will-change: transform;
-        }
-        .hero-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: translateZ(0);
-            will-change: transform;
-            content-visibility: auto;
-            contain: paint;
-            display: block;
-        }
-        .hero-image-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -1;
-        }
-        @media (max-width: 768px) {
-            .hero-image-container {
-                width: 100%;
-                max-width: 434px;
-                aspect-ratio: 434/600;
-                height: auto;
-            }
-            .hero-content {
-                flex-direction: column;
-            }
-            .hero-image-container img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transform: translateZ(0);
-                will-change: transform;
-                content-visibility: auto;
-                contain: paint;
-                display: block;
-            }
-        }
-
-        @font-face {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            font-display: swap;
-            src: local('Inter Regular'), local('Inter-Regular'),
-                 url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
-        }
-        @font-face {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 600;
-            font-display: swap;
-            src: local('Inter SemiBold'), local('Inter-SemiBold'),
-                 url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
-        }
-        @font-face {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 700;
-            font-display: swap;
-            src: local('Inter Bold'), local('Inter-Bold'),
-                 url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
-        }
-    </style>
-
-    <!-- Preload critical assets -->
-    <link rel="preload" href="125-optimized.webp" as="image" type="image/webp" fetchpriority="high">
-    
-    <!-- Defer non-critical CSS -->
-    <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" media="print" onload="this.media='all'">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-content">
+            SD<span class="cursor"></span>
+        </div>
+    </div>
+    <noscript><style>#preloader { display: none; }</style></noscript>
+
     <div class="page-wrapper">
         <header>
             <nav class="container">
                 <div class="logo">
-                    <a href="#hero" aria-label="Home" style="font-family: 'Inter', sans-serif; font-weight: 700;">SD</a>
+                    <a href="#hero">SD</a>
                 </div>
                 <ul class="nav-links">
                     <li><a href="#hero" class="active">Home</a></li>
@@ -210,7 +44,7 @@
             <section id="hero" class="hero-section container fade-in-element">
                 <div class="hero-content">
                     <div class="hero-image-container">
-                        <img src="125-optimized.webp" alt="Photo of Serhii Dolhopolov" width="434" height="600" loading="eager" decoding="async" fetchpriority="high" style="display: block;">
+                        <img src="125.png" alt="Photo of Name Surname">
                     </div>
                     <div class="hero-text">
                         <h2>Serhii Dolhopolov, <span class="degree">Ph.D. Student</span></h2>
@@ -225,7 +59,7 @@
                             <a href="https://www.semanticscholar.org/author/S.-Dolhopolov/2191831037" target="_blank" title="Semantic Scholar"><i class="ai ai-semantic-scholar ai-2x"></i></a>
                             <a href="https://www.researchgate.net/profile/Serhii-Dolhopolov" target="_blank" title="ResearchGate"><i class="fab fa-researchgate fa-2x"></i></a>
                             <a href="https://orcid.org/0000-0001-9418-0943" target="_blank" title="ORCID"><i class="fab fa-orcid fa-2x"></i></a>
-                            <a href="CV.pdf" target="_blank" title="Download CV" class="cv-link"><i class="fas fa-file-lines"></i> CV</a>
+                            <a href="path/to/your_cv.pdf" target="_blank" title="Download CV" class="cv-link"><i class="fas fa-file-lines"></i> CV</a>
                         </div>
                     </div>
                 </div>
@@ -235,7 +69,7 @@
             <section id="about" class="content-section container fade-in-element">
                 <h2 class="section-title"><i class="fas fa-user-circle icon-header"></i> About Me</h2>
                 <div class="section-content">
-                    <p>I am a Ph.D. student and Assistant Lecturer at Kyiv National University of Construction and Architecture, specializing in Artificial Intelligence and Machine Learning. My doctoral research, conducted under the supervision of Dr. Tetiana Honcharenko, focuses on «Information Technology for Modular Adaptive Generation of Program Code Based on Deep Learning Methods», where I am developing novel algorithms and frameworks to automate and optimize software development processes through AI techniques.</p>
+                    <p>I am a Ph.D. student and Assistant Lecturer at Kyiv National University of Construction and Architecture, specializing in Artificial Intelligence and Machine Learning. My doctoral research, conducted under the supervision of Dr. Tetiana Honcharenko, focuses on "Information Technology for Modular Adaptive Generation of Program Code Based on Deep Learning Methods," where I am developing novel algorithms and frameworks to automate and optimize software development processes through AI techniques.</p>
                     
                     <p>My work combines theoretical advancements in neural network architectures with practical applications in the fields of construction, urban planning, and information technology. I am currently leading a state-funded research project on multimodal content analysis for territorial revitalization, exploring how AI can contribute to sustainable urban development. My research aims to address complex challenges such as improving software development efficiency through intelligent code generation and enhancing decision-making processes in smart city initiatives through advanced data analytics.</p>
                     
@@ -267,6 +101,10 @@
             <section id="publications" class="content-section container fade-in-element">
                  <h2 class="section-title"><i class="fas fa-book icon-header"></i> Selected Publications</h2>
                 <div class="section-content">
+                    <div class="publication-item-full"><h4>An Advanced Ensemble Machine Learning Framework for Estimating Long-Term Average Discharge at Hydrological Stations Using Global Metadata</h4><p class="authors">Neftissov, A., Biloshchytskyi, A., Kazambayev, I., <strong>Dolhopolov, S.,</strong> & Honcharenko, T.</p><p class="venue"><img src="mdpi_logo.png" alt="MDPI Logo" class="journal-logo"><em>Water, 17(14)</em>, 2025.</p><p class="links"><a href="https://doi.org/10.3390/w17142097" target="_blank">[DOI]</a><a href="https://www.mdpi.com/2073-4441/17/14/2097/pdf?version=1752565704" target="_blank">[PDF]</a><span class="award-highlight"><i class="fas fa-star"></i> Selected Paper</span><span class="award-highlight"><i class="fas fa-bookmark"></i> Q1, IF 3.0, CS 6.0</span></p></div>
+                    <div class="publication-item-full"><h4>Methods of image pre-processing for automated object recognition systems</h4><p class="authors"><strong>Dolhopolov, S.,</strong> Kruk, P., Zhuk, R., & Honcharenko, T.</p><p class="venue"><em>Management of Development of Complex Systems, No. 62</em>, 2025.</p><p class="links"><a href="https://doi.org/10.32347/2412-9933.2025.62.155-163" target="_blank">[DOI]</a><a href="http://mdcs.knuba.edu.ua/article/view/335160/324104" target="_blank">[PDF]</a></p></div>
+                    <div class="publication-item-full"><h4>Optimizing construction site management through YOLOv5-based object detection: A comprehensive analysis of resource utilization and safety enhancement</h4><p class="authors"><strong>Dolhopolov, S.,</strong> Honcharenko, T., Achkasov, I., Hots, V.</p><p class="venue"><em>International Conference on Digital Technologies in Education, Science and Industry, DTESI 2024</em>, 2024.</p><p class="links"><a href="https://ceur-ws.org/Vol-3966/W3Paper11.pdf" target="_blank">[PDF]</a></p></div>
+                    <div class="publication-item-full"><h4>Advancing automated quality control in automotive manufacturing: A comparative analysis of YOLOv8, YOLOv9, and YOLOv10 for vehicle damage detection</h4><p class="authors"><strong>Dolhopolov, S.,</strong> Honcharenko, T., Chernyshev, D., Panina, O., Makhynia, A.</p><p class="venue"><em>9th International Conference on Digital Technologies in Education, Science and Industry, DTESI 2024</em>, 2024.</p><p class="links"><a href="https://ceur-ws.org/Vol-3966/W3Paper10.pdf" target="_blank">[PDF]</a></p></div>
                     <div class="publication-item-full"><h4>NeuroPhysNet: A Novel Hybrid Neural Network Model for Enhanced Prediction and Control of Cyber-Physical Systems</h4><p class="authors"><strong>Dolhopolov, S.,</strong> Honcharenko, T., Chernyshev, D.</p><p class="venue"><em>Mathematical Modeling and Simulation of Systems. MODS 2024. Lecture Notes in Networks and Systems, vol 1391. Springer, Cham</em>, 2025.</p><p class="links"><a href="https://doi.org/10.1007/978-3-031-90735-7_27" target="_blank">[DOI]</a><span class="award-highlight"><i class="fas fa-star"></i> Selected Paper</span></p></div>
                     <div class="publication-item-full"><h4>YOLOv5-based Object Detection for Construction Site Efficiency: Equipment, Tool, and Vehicle Recognition</h4><p class="authors"><strong>Dolhopolov, S.,</strong> Honcharenko, T., Chernyshev, D., Solovei, O.</p><p class="venue"><em>4th International Workshop on Information Technologies: Theoretical and Applied Problems, ITTAP 2024</em>, 2024.</p><p class="links"><a href="https://ceur-ws.org/Vol-3896/paper4.pdf" target="_blank">[PDF]</a></p></div>
                     <div class="publication-item-full"><h4>YOLOv8, YOLOv9, and YOLOv10: A Study in Automated Vehicle Damage Detection</h4><p class="authors"><strong>Dolhopolov, S.,</strong> Honcharenko, T., Hots, V., Kruk, P., Porokhovnichenko, I.</p><p class="venue"><em>4th International Workshop on Information Technologies: Theoretical and Applied Problems, ITTAP 2024</em>, 2024.</p><p class="links"><a href="https://ceur-ws.org/Vol-3896/paper3.pdf" target="_blank">[PDF]</a></p></div>
@@ -293,7 +131,7 @@
                             <div class="timeline-content">
                                 <h3>Junior Researcher</h3>
                                 <p class="timeline-institution">Research Department of the Kyiv National University of Construction and Architecture, Kyiv, Ukraine</p>
-                                <p class="timeline-date">03/2025 - Present</p>
+                                <p class="timeline-date">2024 - Present</p>
                                 <p class="timeline-details">Leading a state-funded research project «Methodology for Determining the Tonality and Classification of Multimodal Content in Territorial Revitalization Projects Based on Neural Network Methods». Developing innovative AI approaches for analyzing complex multimodal data in urban development contexts.</p>
                             </div>
                         </div>
@@ -302,17 +140,8 @@
                             <div class="timeline-content">
                                 <h3>Assistant Lecturer</h3>
                                 <p class="timeline-institution">IT Department of the Kyiv National University of Construction and Architecture, Kyiv, Ukraine</p>
-                                <p class="timeline-date">09/2023 - Present</p>
+                                <p class="timeline-date">2023 - Present</p>
                                 <p class="timeline-details">Teaching multiple courses in artificial intelligence, neural networks, and programming at the university level. Developing and delivering curriculum for courses including Artificial Intelligence and Neural Networks, Python Programming, Artificial Intelligence and Hybrid Networks, and Object-Oriented Programming. Preparing educational materials and conducting practical laboratory sessions with students.</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-icon"><i class="fas fa-university"></i></div>
-                            <div class="timeline-content">
-                                <h3>Educational Program Accreditation Expert</h3>
-                                <p class="timeline-institution">National Agency for Higher Education Quality Assurance, Kyiv, Ukraine</p>
-                                <p class="timeline-date">05/2023 - Present</p>
-                                <p class="timeline-details">Evaluating higher education programs against national quality standards. Participating in accreditation site visits and reviews, analyzing curriculum content, teaching methodologies, and educational outcomes. Contributing to quality assurance processes that enhance the standards of higher education across Ukrainian universities.</p>
                             </div>
                         </div>
                     </div>
@@ -330,7 +159,6 @@
                                 <h3>Ph.D. in Computer Science</h3>
                                 <p class="timeline-institution">Kyiv National University of Construction and Architecture, Kyiv, Ukraine</p>
                                 <p class="timeline-date">2024 - Present</p>
-                                <p><span class="advisor-highlight"><i class="fas fa-user-graduate"></i> Scientific Advisor: Dr. Tetyana Honcharenko</span></p>
                             </div>
                         </div>
                         <div class="timeline-item">
@@ -341,7 +169,6 @@
                                 <p class="timeline-date">2022 - 2023</p>
                                 <p><span class="award-highlight"><i class="fas fa-star"></i> Diploma with honours</span></p>
                                 <p><span class="award-highlight"><i class="fas fa-award"></i> GPA 97.43/100</span></p>
-                                <p><span class="advisor-highlight"><i class="fas fa-user-graduate"></i> Scientific Advisor: Dr. Svitlana Kondakova</span></p>
                             </div>
                         </div>
                         <div class="timeline-item">
@@ -352,7 +179,6 @@
                                 <p class="timeline-date">2018 - 2022</p>
                                 <p><span class="award-highlight"><i class="fas fa-star"></i> Diploma with honours</span></p>
                                 <p><span class="award-highlight"><i class="fas fa-award"></i> GPA 100/100</span></p>
-                                <p><span class="award-highlight"><i class="fas fa-certificate"></i> Comprehensive State Exam: 100/100</span></p>
                             </div>
                         </div>
                     </div>
@@ -367,7 +193,7 @@
                         <h4>Methodology for Determining the Tonality and Classification of Multimodal Content in Territorial Revitalization Projects Based on Neural Network Methods</h4>
                         <p class="project-details"><strong>Project Leader:</strong> <span class="project-leader">Dr. Honcharenko T.</span></p>
                         <p class="project-details"><strong>Project Team:</strong> <span class="project-team">Dr. Honcharenko T., <strong>Dolhopolov S.,</strong> Dr. Poplavskyi O., Dr. Molodid O., Delembovskyi M., Riabchun Y.</span></p>
-                        <p class="project-details"><strong>Funding:</strong> <span class="project-funding">2 929 695 UAH (~ 70 650 USD), State Budget of Ukraine</span></p>
+                        <p class="project-details"><strong>Funding:</strong> <span class="project-funding">2,929,695 UAH, State Budget of Ukraine</span></p>
                         <p class="project-details"><strong>Registration Number:</strong> <span class="project-id">0125U001683</span></p>
                         <p class="project-details"><strong>Period:</strong> <span class="project-period">2025-2027</span></p>
                         <p class="project-details"><strong>Status:</strong> <span class="project-status award-highlight"><i class="fas fa-award"></i> Approved for funding by the Ministry of Education and Science of Ukraine</span></p>
@@ -383,12 +209,21 @@
                 <div class="section-content">
                     <ul class="news-list-full">
                         <li>
-                            <span class="news-date">05/14/2025:</span>
-                            <span class="news-text">Two papers accepted for <strong>2025 IEEE 5th International Conference on Smart Information Systems and Technologies (SIST)</strong> in Astana, Kazakhstan: «Automated Face Recognition System Using Convolutional Neural Network» and «Sensor-Aware Graph Convolutional and LSTM Model for Reliable Water Quality Forecasting». <a href="https://sist.astanait.edu.kz/" target="_blank">(Read more)</a></span>
+                            <span class="news-date">07/14/2025:</span>
+                            <div class="news-item-content">
+                                <p class="news-text">Published «<strong>An Advanced Ensemble Machine Learning Framework for Estimating Long-Term Average Discharge at Hydrological Stations Using Global Metadata</strong>» in Water (MDPI, CiteScore 6.0, Q1, IF 3.0). <a href="https://www.mdpi.com/2073-4441/17/14/2097" target="_blank">(Read more)</a></p>
+                                <div class="news-image-placeholder lightbox-trigger">
+                                    <img src="q1.png" alt="Conceptual flowchart of an integrated operational monitoring algorithm, illustrating the potential deployment workflow for the LTA estimation model">
+                                </div>
+                            </div>
                         </li>
                         <li>
-                            <span class="news-date">05/12/2025:</span>
-                            <span class="news-text">Paper accepted for International Workshop IT Project Management: «<strong>Explainable AI (XAI) for Multimodal Sentiment Analysis in Revitalization Project Management</strong>» to be presented at the conference. <a href="https://www.workshopitpm.kyiv.ua/" target="_blank">(Read more)</a></span>
+                            <span class="news-date">06/27/2025:</span>
+                            <span class="news-text">Published «<strong>Methods of image pre-processing for automated object recognition systems</strong>» in the Management of Development of Complex Systems journal. <a href="http://mdcs.knuba.edu.ua/article/view/335160" target="_blank">(Read more)</a></span>
+                        </li>
+                        <li>
+                            <span class="news-date">05/14/2025:</span>
+                            <span class="news-text">Two papers accepted for <strong>2025 IEEE 5th International Conference on Smart Information Systems and Technologies (SIST)</strong> in Astana, Kazakhstan: «Automated Face Recognition System Using Convolutional Neural Network» and «Sensor-Aware Graph Convolutional and LSTM Model for Reliable Water Quality Forecasting». <a href="https://sist.astanait.edu.kz/" target="_blank">(Read more)</a></span>
                         </li>
                         <li>
                             <span class="news-date">04/29/2025:</span>
@@ -439,23 +274,21 @@
                 <div class="section-content">
                     <div class="volunteer-item">
                         <h4><i class="fas fa-globe-europe"></i> YES (Yalta European Strategy) Conference</h4>
-                        <p class="volunteer-role">Team Member/Volunteer | Annual International Forum</p>
-                        <p class="volunteer-description">Serving as a member of the organizational team for the YES international annual conference, which brings together over 350 leaders from politics, business, media, civil society, and the expert community from more than 50 countries around the world. The forum has been a crucial platform for discussing Ukraine's European integration since 2004.</p>
-                        <p class="volunteer-more"><a href="https://yes-ukraine.org/en/" target="_blank">Learn more about YES <i class="fas fa-external-link-alt"></i></a></p>
+                        <p class="volunteer-role">Volunteer Organizer | Annual International Forum</p>
+                        <p class="volunteer-description">Serving as a volunteer organizer for the YES international annual conference, which brings together over 350 leaders from politics, business, media, civil society, and the expert community from more than 50 countries around the world. The forum has been a crucial platform for discussing Ukraine's European integration since 2004.</p>
                     </div>
                     
                     <div class="volunteer-item">
                         <h4><i class="fas fa-heartbeat"></i> RECOVERY Rehabilitation Network</h4>
-                        <p class="volunteer-role">Event Participant Volunteer | Network of Innovation Rehabilitation Centers</p>
-                        <p class="volunteer-description">Supporting the RECOVERY project as an event volunteer participant. RECOVERY is Ukraine's largest network of innovative rehabilitation centers for wounded soldiers, currently operating 16 centers across Ukraine and having provided rehabilitation assistance to over 22,000 patients.</p>
+                        <p class="volunteer-role">Technology Support Volunteer | Network of Innovation Rehabilitation Centers</p>
+                        <p class="volunteer-description">Contributing technical expertise to the RECOVERY project, Ukraine's largest network of innovative rehabilitation centers for wounded soldiers. Assist with implementation of high-tech rehabilitation equipment and VR devices that help accelerate recovery time for defenders. The network currently operates 16 centers across Ukraine and has provided rehabilitation assistance to over 22,000 patients.</p>
                         <p class="volunteer-more"><a href="https://recoveryua.org/en/" target="_blank">Learn more about RECOVERY <i class="fas fa-external-link-alt"></i></a></p>
                     </div>
                     
                     <div class="volunteer-item">
-                        <h4><i class="fas fa-chart-line"></i> «General Combat Losses» Analytics Project</h4>
-                        <p class="volunteer-role">Developer & Owner | Information Analytics Platform</p>
-                        <p class="volunteer-description">Created and maintain an information-analytical project that provides comprehensive statistics and metrics on combat losses. The platform offers an integrated toolkit for civilians, including air alert maps and combat action maps, helping citizens stay informed with accurate and up-to-date information during challenging times.</p>
-                        <p class="volunteer-more"><a href="https://t.me/zbvUA_bot" target="_blank">Access the Analytics Bot <i class="fas fa-external-link-alt"></i></a></p>
+                        <h4><i class="fas fa-chart-line"></i> "General Combat Losses" Analytics Project</h4>
+                        <p class="volunteer-role">Developer & Maintainer | Information Analytics Platform</p>
+                        <p class="volunteer-description">Developed and continue to maintain an information-analytical project that provides comprehensive statistics and metrics on combat losses. The platform offers an integrated toolkit for civilians, including air alert maps and combat action maps, helping citizens stay informed with accurate and up-to-date information during challenging times.</p>
                     </div>
                 </div>
             </section>
@@ -466,43 +299,43 @@
                 <div class="section-content">
                     
                     <div class="teaching-item-full">
-                        <h4>Assistant Lecturer: CS4775 - Artificial intelligence and neural networks</h4>
+                        <h4>Instructor: CS4775 - Artificial intelligence and neural networks</h4>
                         <p class="teaching-details">Kyiv National University of Construction and Architecture | Department of Information Technologies</p>
                         <p class="teaching-date">Spring 2025</p>
                         <p>Developing curriculum focused on deep learning architectures and their applications in real-world scenarios. Creating hands-on lab exercises with TensorFlow and PyTorch frameworks for students to build and optimize neural network models.</p>
                     </div>
                     <div class="teaching-item-full">
-                        <h4>Assistant Lecturer: CS3621 - Programming in the Python language</h4>
+                        <h4>Instructor: CS3621 - Programming in the Python language</h4>
                         <p class="teaching-details">Kyiv National University of Construction and Architecture | Department of Information Technologies</p>
                         <p class="teaching-date">Fall 2024, Spring 2025</p>
                         <p>Guiding students from Python fundamentals to advanced concepts including data structures, algorithms, and object-oriented programming. Designing project-based assignments that emphasize real-world problem-solving and data analysis techniques.</p>
                     </div>
                     <div class="teaching-item-full">
-                        <h4>Assistant Lecturer: CS4774 - Artificial intelligence and hybrid networks</h4>
+                        <h4>Instructor: CS4774 - Artificial intelligence and hybrid networks</h4>
                         <p class="teaching-details">Kyiv National University of Construction and Architecture | Department of Information Technologies</p>
                         <p class="teaching-date">Fall 2024</p>
                         <p>Teaching advanced AI techniques that combine multiple neural network architectures and methodologies. Focusing on hybrid systems that integrate symbolic reasoning with statistical approaches to overcome limitations of traditional AI methods.</p>
                     </div>
                     <div class="teaching-item-full">
-                        <h4>Assistant Lecturer: CS4815 - Neural networks and artificial intelligence systems in education</h4>
+                        <h4>Instructor: CS4815 - Neural networks and artificial intelligence systems in education</h4>
                         <p class="teaching-details">Kyiv National University of Construction and Architecture | Department of Information Technologies</p>
                         <p class="teaching-date">Fall 2024</p>
                         <p>Exploring the intersection of AI and educational technology, including intelligent tutoring systems and learning analytics. Developing case studies on how neural networks can personalize learning experiences and improve educational outcomes.</p>
                     </div>
                     <div class="teaching-item-full">
-                        <h4>Assistant Lecturer: CS283 - Modeling of artificial intelligence tasks</h4>
+                        <h4>Instructor: CS283 - Modeling of artificial intelligence tasks</h4>
                         <p class="teaching-details">Kyiv National University of Construction and Architecture | Department of Information Technologies</p>
                         <p class="teaching-date">Spring 2024, Spring 2025</p>
                         <p>Instructing students on formal approaches to modeling complex AI problems. Covering mathematical foundations necessary for algorithm design and implementation, with emphasis on optimization techniques and performance evaluation metrics.</p>
                     </div>
                     <div class="teaching-item-full">
-                        <h4>Assistant Lecturer: CS492 - Artificial Intelligence: Foundations and Frontiers 🚀</h4>
+                        <h4>Instructor: CS492 - Artificial Intelligence: Foundations and Frontiers 🚀</h4>
                         <p class="teaching-details">Kyiv National University of Construction and Architecture | Department of Information Technologies</p>
                         <p class="teaching-date">Spring 2024</p>
                         <p>Leading an innovative course that bridges established AI theories with cutting-edge research developments. Incorporating discussions on ethical implications, future trends, and interdisciplinary applications of artificial intelligence across various domains.</p>
                     </div>
                     <div class="teaching-item-full">
-                        <h4>Assistant Lecturer: CS816 - Object-oriented programming</h4>
+                        <h4>Instructor: CS816 - Object-oriented programming</h4>
                         <p class="teaching-details">Kyiv National University of Construction and Architecture | Department of Information Technologies</p>
                         <p class="teaching-date">Fall 2023, Spring 2024, Fall 2024, Spring 2025</p>
                         <p>Teaching core principles of software design through object-oriented paradigms across multiple programming languages (C++, C#, Java, Python, etc.). Guiding students through practical development of software systems with emphasis on design patterns, clean code practices, and collaborative development methodologies.</p>
@@ -517,6 +350,12 @@
                 <p>Passionately crafting the future of AI.</p>
             </div>
         </footer>
+    </div>
+
+    <!-- Lightbox Structure -->
+    <div id="lightbox">
+        <span class="lightbox-close">×</span>
+        <img src="" alt="Full-screen view" class="lightbox-image">
     </div>
 
     <script src="script.js"></script>
