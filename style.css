@@ -555,26 +555,140 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
     }
 }
 
-/* Add styling for scientific advisor information */
-.advisor-highlight {
-    display: inline-block;
-    color: var(--text-secondary-color);
-    margin-bottom: 0.2rem;
-    font-size: 0.9rem;
+/* --- Preloader --- */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    opacity: 1;
+    visibility: visible;
 }
 
-.advisor-highlight i {
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-content {
     color: var(--primary-accent);
-    margin-right: 5px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
 }
 
-/* Ensure consistent spacing between highlights */
-.award-highlight, .advisor-highlight {
-    margin-bottom: 0.4rem;
+.cursor {
     display: inline-block;
+    width: 3px;
+    height: 2.5rem;
+    background-color: var(--primary-accent);
+    margin-left: 8px;
+    animation: blink 0.8s infinite;
+    vertical-align: bottom;
 }
 
-/* Style for comprehensive exam result */
-.timeline-content .award-highlight i.fa-certificate {
-    color: #ffc107; /* Golden color for the certificate icon */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+.journal-logo {
+    height: 1.6em;
+    vertical-align: text-bottom;
+    margin-right: 8px;
+    /*filter: invert(68%) sepia(11%) saturate(399%) hue-rotate(171deg) brightness(91%) contrast(85%);*/
+}
+
+.news-item-content {
+    flex: 1;
+}
+
+.news-item-content .news-text {
+    margin: 0;
+    color: var(--text-secondary-color);
+}
+
+.news-image-placeholder {
+    margin-top: 1rem;
+    max-width: 75%;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.news-image-placeholder img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.lightbox-trigger {
+    cursor: pointer;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.lightbox-trigger:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+#lightbox {
+    position: fixed;
+    z-index: 10001;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 17, 20, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#lightbox.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.lightbox-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: var(--border-radius);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+#lightbox.active .lightbox-image {
+    transform: scale(1);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.lightbox-close:hover {
+    color: var(--primary-accent);
 }
