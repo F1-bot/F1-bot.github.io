@@ -25,6 +25,7 @@
     <!-- Critical CSS -->
     <style>
         body {
+            background-color: #16191C;
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
@@ -32,14 +33,19 @@
         }
         .page-wrapper {
             min-height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease-in;
+        }
+        .page-wrapper.loaded {
+            opacity: 1;
+            visibility: visible;
         }
         header {
-            position: fixed;
+            position: sticky;
             width: 100%;
             top: 0;
             z-index: 1000;
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .container {
             max-width: 1200px;
