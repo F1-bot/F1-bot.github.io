@@ -1,12 +1,18 @@
 // --- Preloader Logic ---
 window.onload = function() {
     const preloader = document.getElementById('preloader');
+    const pageWrapper = document.querySelector('.page-wrapper');
     if (preloader) {
         preloader.classList.add('hidden');
         // Optional: completely remove from DOM after transition
         setTimeout(() => {
             preloader.style.display = 'none';
         }, 500); // Should match CSS transition duration
+    }
+
+    if (pageWrapper) {
+        // Add the 'loaded' class to smoothly reveal the content
+        pageWrapper.classList.add('loaded');
     }
 };
 
