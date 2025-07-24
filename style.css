@@ -709,3 +709,50 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
         transform: rotate(360deg);
     }
 }
+
+/* Styling for Publication with Thumbnail */
+.publication-item-full.with-thumbnail {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.publication-thumbnail {
+    flex: 0 0 150px;
+    max-width: 150px;
+}
+
+.publication-thumbnail img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.publication-details-text {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .publication-item-full.with-thumbnail {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .publication-thumbnail {
+        flex-basis: auto;
+        max-width: 250px;
+        margin-bottom: 1rem;
+    }
+
+    .publication-details-text {
+        width: 100%;
+    }
+
+    .publication-details-text .links,
+    .publication-details-text .authors {
+        justify-content: center;
+    }
+}
