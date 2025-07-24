@@ -691,7 +691,14 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
     font-size: 40px;
     font-weight: bold;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: color 0.2s, opacity 0.3s ease
+    opacity: 0;
+    visibility: hidden;
+}
+
+#lightbox.active .lightbox-close {
+    opacity: 1;
+    visibility: visible;
 }
 
 .lightbox-close:hover {
