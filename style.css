@@ -672,6 +672,11 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
     border-radius: var(--border-radius);
     transform: scale(0.95);
     transition: transform 0.3s ease;
+    display: none;
+}
+
+.lightbox-image.loaded {
+    display: block;
 }
 
 #lightbox.active .lightbox-image {
