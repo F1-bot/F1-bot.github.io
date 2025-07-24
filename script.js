@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             lightbox.classList.add('active');
             lightboxLoader.style.display = 'block';
-            lightboxImage.style.display = 'none';
+            lightboxImage.classList.remove('loaded');
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
 
             const img = new Image();
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Once loaded, update the real image src and hide loader
                 lightboxImage.src = this.src;
                 lightboxLoader.style.display = 'none';
-                lightboxImage.style.display = 'block';
+                lightboxImage.classList.add('loaded');
             };
             img.src = imgSrc; // Start loading
         };
@@ -144,6 +144,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset for next open
             setTimeout(() => {
                 lightboxImage.src = "";
+                lightboxImage.classList.remove('loaded');
+                lightboxLoader.style.display = 'block';
             }, 300); // Delay to allow fade-out
         };
 
