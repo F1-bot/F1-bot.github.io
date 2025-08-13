@@ -857,6 +857,13 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
     display: block;
 }
 
+.showcase-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .showcase-footer {
     display: block;
     text-align: center;
