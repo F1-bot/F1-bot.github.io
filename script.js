@@ -163,4 +163,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- Dribbble Showcase Popup Logic ---
+    const container = document.querySelector('.dribbble-container');
+    const popup = document.querySelector('.dribbble-showcase-popup');
+
+    if (container && popup) {
+        const trigger = container.querySelector('.dribbble-showcase-trigger');
+
+        // Show/hide on click
+        trigger.addEventListener('click', (event) => {
+            event.stopPropagation();
+            popup.classList.toggle('visible');
+        });
+
+        // Hide when clicking anywhere else on the page
+        document.addEventListener('click', (event) => {
+            // Check if the click is outside the entire container
+            if (!container.contains(event.target)) {
+                popup.classList.remove('visible');
+            }
+        });
+
+        // Hide when pressing the Escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                popup.classList.remove('visible');
+            }
+        });
+    }
+
 });
