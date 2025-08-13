@@ -386,7 +386,7 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
         margin-bottom: 2.5rem;
         text-align: center;
     }
-    
+
     /* Grid layout for academic links */
     .academic-links {
         display: grid;
@@ -396,7 +396,7 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
         max-width: 300px;
         padding: 0 10px;
     }
-    
+
     /* Style for all icon links */
     .academic-links a {
         display: flex;
@@ -410,13 +410,13 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
         border: 1px solid rgba(48, 54, 61, 0.5);
         padding: 0;
     }
-    
+
     /* Fix icon sizing */
-    .academic-links .ai-2x, 
+    .academic-links .ai-2x,
     .academic-links .fa-2x {
         font-size: 1.5em;
     }
-    
+
     /* CV button specific styling */
     .academic-links .cv-link {
         grid-column: 2 / 3; /* Center in the grid */
@@ -430,16 +430,18 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
         display: flex;
         white-space: nowrap;
     }
-    
+
     /* Ensure equal spacing */
     .academic-links .cv-link i {
         margin-right: 6px;
     }
-    
+
     /* Force specific icon positioning */
+    /*
     .academic-links a:nth-child(7) {
-        grid-column: 2 / 3; /* Center the ORCID icon in the grid */
+        grid-column: 2 / 3;
     }
+    */
     
     /* Improve hero section spacing */
     .hero-section {
@@ -691,7 +693,7 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
     font-size: 40px;
     font-weight: bold;
     cursor: pointer;
-    transition: color 0.2s, opacity 0.3s ease
+    transition: color 0.2s, opacity 0.3s ease;
     opacity: 0;
     visibility: hidden;
 }
@@ -767,4 +769,117 @@ footer p { margin-bottom: 0.5rem; color: var(--text-secondary-color); }
     .publication-details-text .authors {
         justify-content: center;
     }
+}
+
+/* --- Dribbble Showcase Popup --- */
+.dribbble-container {
+    position: relative;
+    display: inline-block;
+}
+
+.dribbble-showcase-trigger {
+    color: var(--primary-accent);
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    cursor: pointer;
+    font-style: italic;
+}
+
+.dribbble-showcase-popup {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 10px;
+
+    width: 320px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    pointer-events: none;
+}
+
+.dribbble-showcase-popup.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.showcase-header {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    font-style: normal;
+}
+
+.showcase-header .fa-dribbble {
+    color: #ea4c89;
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+.showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.showcase-item {
+    display: block;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.showcase-item:hover {
+    transform: scale(1.05);
+    border-color: var(--primary-accent);
+}
+
+.showcase-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.showcase-footer {
+    display: block;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--primary-accent);
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: rgba(74, 144, 226, 0.1);
+    transition: background-color 0.2s ease;
+    font-style: normal;
+}
+
+.showcase-footer:hover {
+    background-color: rgba(74, 144, 226, 0.2);
+}
+
+.showcase-footer i {
+    margin-left: 5px;
+    transition: transform 0.2s ease;
+}
+
+.showcase-footer:hover i {
+    transform: translateX(3px);
 }
