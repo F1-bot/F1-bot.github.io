@@ -112,78 +112,50 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(item);
     });
 
-    // --- Lazy Loading for Images ---
-    const lazyImages = document.querySelectorAll('img.lazy');
-    if (lazyImages.length > 0) {
-        const lazyImageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const lazyImage = entry.target;
-                    lazyImage.src = lazyImage.dataset.src;
-                    lazyImage.classList.remove('lazy');
-                    observer.unobserve(lazyImage);
-                }
-            });
-        });
-
-        lazyImages.forEach(lazyImage => {
-            lazyImageObserver.observe(lazyImage);
-        });
-    }
-
-    // --- Lightbox Logic with Event Delegation ---
+    // --- Lightbox Logic ---
     const lightbox = document.getElementById('lightbox');
     if (lightbox) {
         const lightboxImage = lightbox.querySelector('.lightbox-image');
         const lightboxLoader = lightbox.querySelector('.lightbox-loader');
+        const lightboxTriggers = document.querySelectorAll('.lightbox-trigger');
         const lightboxClose = lightbox.querySelector('.lightbox-close');
 
-        const openLightbox = (triggerElement) => {
-            const imgElement = triggerElement.querySelector('img');
-            if (!imgElement) return; // Exit if no img found in trigger
-
-            const imgSrc = imgElement.src;
+        const openLightbox = (e) => {
+            const imgSrc = e.currentTarget.querySelector('img').src;
 
             lightbox.classList.add('active');
             lightboxLoader.style.display = 'block';
-            lightboxImage.classList.remove('loaded'); // Reset animation state
+            lightboxImage.classList.remove('loaded');
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
 
             const img = new Image();
             img.onload = function() {
+                // Once loaded, update the real image src and hide loader
                 lightboxImage.src = this.src;
                 lightboxLoader.style.display = 'none';
-                lightboxImage.classList.add('loaded'); // Add class to trigger transition
+                lightboxImage.classList.add('loaded');
             };
-            img.onerror = function() {
-                // Handle cases where the image fails to load
-                console.error("Lightbox image failed to load:", imgSrc);
-                closeLightbox();
-            };
-            img.src = imgElement.dataset.src || imgSrc; // Use data-src if available for lazy-loaded images
+            img.src = imgSrc; // Start loading
         };
 
         const closeLightbox = () => {
             lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+            // Reset for next open
             setTimeout(() => {
                 lightboxImage.src = "";
                 lightboxImage.classList.remove('loaded');
-                lightboxLoader.style.display = 'block'; // Reset loader for next time
-            }, 300);
+                lightboxLoader.style.display = 'block';
+            }, 300); // Delay to allow fade-out
         };
 
-        // Event delegation for opening the lightbox
-        document.addEventListener('click', function(e) {
-            const trigger = e.target.closest('.lightbox-trigger');
-            if (trigger) {
-                e.preventDefault();
-                openLightbox(trigger);
-            }
+        lightboxTriggers.forEach(trigger => {
+            trigger.addEventListener('click', openLightbox);
         });
 
-        // Event listener for closing the lightbox
         lightboxClose.addEventListener('click', closeLightbox);
+
+        // Close lightbox when clicking on the background
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
                 closeLightbox();
