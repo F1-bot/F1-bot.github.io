@@ -112,6 +112,25 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(item);
     });
 
+    // --- Lazy Loading for Images ---
+    const lazyImages = document.querySelectorAll('img.lazy');
+    if (lazyImages.length > 0) {
+        const lazyImageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const lazyImage = entry.target;
+                    lazyImage.src = lazyImage.dataset.src;
+                    lazyImage.classList.remove('lazy');
+                    observer.unobserve(lazyImage);
+                }
+            });
+        });
+
+        lazyImages.forEach(lazyImage => {
+            lazyImageObserver.observe(lazyImage);
+        });
+    }
+
     // --- Lightbox Logic with Event Delegation ---
     const lightbox = document.getElementById('lightbox');
     if (lightbox) {
@@ -141,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error("Lightbox image failed to load:", imgSrc);
                 closeLightbox();
             };
-            img.src = imgSrc;
+            img.src = imgElement.dataset.src || imgSrc; // Use data-src if available for lazy-loaded images
         };
 
         const closeLightbox = () => {
