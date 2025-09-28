@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 current = section.getAttribute('id');
             }
         });
-        
+
         navLi.forEach(a => {
             a.classList.remove('active');
             if (a.getAttribute('href').substring(1) === current) {
@@ -112,50 +112,59 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(item);
     });
 
-    // --- Lightbox Logic ---
+    // --- Lightbox Logic with Event Delegation ---
     const lightbox = document.getElementById('lightbox');
     if (lightbox) {
         const lightboxImage = lightbox.querySelector('.lightbox-image');
         const lightboxLoader = lightbox.querySelector('.lightbox-loader');
-        const lightboxTriggers = document.querySelectorAll('.lightbox-trigger');
         const lightboxClose = lightbox.querySelector('.lightbox-close');
 
-        const openLightbox = (e) => {
-            const imgSrc = e.currentTarget.querySelector('img').src;
-            
+        const openLightbox = (triggerElement) => {
+            const imgElement = triggerElement.querySelector('img');
+            if (!imgElement) return; // Exit if no img found in trigger
+
+            const imgSrc = imgElement.src;
+
             lightbox.classList.add('active');
             lightboxLoader.style.display = 'block';
-            lightboxImage.classList.remove('loaded');
+            lightboxImage.classList.remove('loaded'); // Reset animation state
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
 
             const img = new Image();
             img.onload = function() {
-                // Once loaded, update the real image src and hide loader
                 lightboxImage.src = this.src;
                 lightboxLoader.style.display = 'none';
-                lightboxImage.classList.add('loaded');
+                lightboxImage.classList.add('loaded'); // Add class to trigger transition
             };
-            img.src = imgSrc; // Start loading
+            img.onerror = function() {
+                // Handle cases where the image fails to load
+                console.error("Lightbox image failed to load:", imgSrc);
+                closeLightbox();
+            };
+            img.src = imgSrc;
         };
 
         const closeLightbox = () => {
             lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Restore scrolling
-            // Reset for next open
+            document.body.style.overflow = 'auto';
             setTimeout(() => {
                 lightboxImage.src = "";
                 lightboxImage.classList.remove('loaded');
-                lightboxLoader.style.display = 'block';
-            }, 300); // Delay to allow fade-out
+                lightboxLoader.style.display = 'block'; // Reset loader for next time
+            }, 300);
         };
 
-        lightboxTriggers.forEach(trigger => {
-            trigger.addEventListener('click', openLightbox);
+        // Event delegation for opening the lightbox
+        document.addEventListener('click', function(e) {
+            const trigger = e.target.closest('.lightbox-trigger');
+            if (trigger) {
+                e.preventDefault();
+                openLightbox(trigger);
+            }
         });
 
+        // Event listener for closing the lightbox
         lightboxClose.addEventListener('click', closeLightbox);
-
-        // Close lightbox when clicking on the background
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
                 closeLightbox();
