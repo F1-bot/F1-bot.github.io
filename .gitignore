@@ -1,0 +1,17 @@
+# Local development artifacts
+.snapshots/
+.claude/
+
+# Local source materials (paper drafts, scans, exports)
+*.pdf
+*.txt
+
+# Legacy / unused files not used by the site
+uploads/
+tweaks-panel.jsx
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
