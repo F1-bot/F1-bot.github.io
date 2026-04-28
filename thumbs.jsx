@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Animated thumbnails — pure SVG/CSS loops, one per publication/project.
+// Animated thumbnails - pure SVG/CSS loops, one per publication/project.
 // Each is a 160×100 abstract "visual fingerprint" you can tie to a paper.
 // -----------------------------------------------------------------------------
 const { useEffect, useRef, useState } = React;
@@ -260,7 +260,7 @@ function NoiseThumb() {
   );
 }
 
-// orbit: meta-learning — tasks orbiting a central model
+// orbit: meta-learning - tasks orbiting a central model
 function OrbitThumb() {
   const t = useClock();
   const out = [];
@@ -337,7 +337,7 @@ function GridThumb() {
   return <ThumbFrame>{cells}</ThumbFrame>;
 }
 
-// ripple: distillation — big model → small model (two concentric ripples)
+// ripple: distillation - big model → small model (two concentric ripples)
 function RippleThumb() {
   const t = useClock();
   const rings = [];
@@ -426,7 +426,7 @@ function ProgressThumb() {
   );
 }
 
-// career-guidance: paper-themed (IEEE SIST 2022) — AI determining career
+// career-guidance: paper-themed (IEEE SIST 2022) - AI determining career
 // guidance for a future university student. A central "student" node
 // (ring + accent core) is surrounded by 7 career-option nodes arranged
 // in an ellipse. Different shapes (circles/squares/triangles) hint at
@@ -478,7 +478,7 @@ function CareerGuidanceThumb() {
         );
       })}
 
-      {/* career-option nodes — heterogeneous shapes */}
+      {/* career-option nodes - heterogeneous shapes */}
       {careers.map((c, i) => {
         const isRec = i === recIdx;
         const op = isRec ? 0.6 + 0.35 * focus : 0.55;
@@ -516,10 +516,10 @@ function CareerGuidanceThumb() {
   );
 }
 
-// object-detect: paper-themed (CEUR ITTAP 2022) — digital object detection
+// object-detect: paper-themed (CEUR ITTAP 2022) - digital object detection
 // on a construction site, top-down view. A site boundary holds an interior
 // BIM building footprint and several detected items (rect/circle/triangle
-// shapes — vehicles, equipment, materials, workers). Each item is wrapped
+// shapes - vehicles, equipment, materials, workers). Each item is wrapped
 // in YOLO-style corner brackets; a vertical AI scan line sweeps left→right
 // and intensifies items + brackets as it passes over them. Centered both axes.
 function ObjectDetectThumb() {
@@ -608,7 +608,7 @@ function ObjectDetectThumb() {
             x2={bldX + bldW} y2={bldY + bldH * 0.5}
             stroke="var(--muted-2)" strokeWidth="0.4" strokeOpacity="0.4" />
 
-      {/* detected items — shape + corner brackets, intensify near scan */}
+      {/* detected items - shape + corner brackets, intensify near scan */}
       {items.map((item, i) => {
         const x = siteX + item.dx;
         const dist = Math.abs(x - scanX);
@@ -636,13 +636,13 @@ function ObjectDetectThumb() {
   );
 }
 
-// twin-mirror: paper-themed (CSIT 2022) — BIM + AI integration as a
+// twin-mirror: paper-themed (CSIT 2022) - BIM + AI integration as a
 // physical-virtual mirror. Top half: solid ink silhouettes (physical
 // site objects). Bottom half: their wireframe BIM twins in accent
 // (with cross hairlines for the digital model). A horizontal accent
 // dashed mirror line separates the two layers; a slow vertical sync
 // scanner sweeps left→right, briefly intensifying both an object and
-// its twin as it passes — synchronisation between reality and BIM.
+// its twin as it passes - synchronisation between reality and BIM.
 function TwinMirrorThumb() {
   const t = useClock();
   const cy = 50;
@@ -651,7 +651,7 @@ function TwinMirrorThumb() {
   const scanX = 8 + scanT * (W - 16);
 
   // Construction-site scene: tower crane on the left + building under
-  // construction on the right. Drawn twice — physical (above mirror, ink,
+  // construction on the right. Drawn twice - physical (above mirror, ink,
   // filled) and BIM digital twin (below mirror, accent wireframe with
   // BIM grid lines). sign=-1 → physical, sign=+1 → twin.
   const drawScene = (sign, color, opacity, isPhysical) => {
@@ -669,11 +669,11 @@ function TwinMirrorThumb() {
     const bldFar = cy + sign * 22;
     const bldTop = Math.min(bldNear, bldFar);
     const bldH = Math.abs(bldFar - bldNear);
-    const cutTop = bldTop;          // missing top-right corner — under construction
+    const cutTop = bldTop;          // missing top-right corner - under construction
 
     return (
       <g>
-        {/* Tower crane — mast */}
+        {/* Tower crane - mast */}
         <line x1={mastX} y1={baseY} x2={mastX} y2={cabinY}
               stroke={color} strokeWidth="1.4" strokeOpacity={opacity} />
         {/* Crane base footprint */}
@@ -725,7 +725,7 @@ function TwinMirrorThumb() {
                 strokeOpacity={isPhysical ? 0.7 : opacity * 0.55} />
         ))}
 
-        {/* Vertical column lines (BIM grid — twin only) */}
+        {/* Vertical column lines (BIM grid - twin only) */}
         {!isPhysical &&
           [1, 2, 3].map((i) => (
             <line key={`v-${i}`}
@@ -747,18 +747,18 @@ function TwinMirrorThumb() {
 
   return (
     <ThumbFrame>
-      {/* mirror line — physical/digital boundary */}
+      {/* mirror line - physical/digital boundary */}
       <line x1={6} y1={cy} x2={W - 6} y2={cy}
             stroke="var(--accent)" strokeWidth="0.5"
             strokeDasharray="2 1.5" strokeOpacity="0.55" />
 
-      {/* physical site — ink, filled */}
+      {/* physical site - ink, filled */}
       {drawScene(-1, "var(--ink)", 0.7, true)}
 
-      {/* digital twin — accent, wireframe + BIM grid */}
+      {/* digital twin - accent, wireframe + BIM grid */}
       {drawScene(+1, "var(--accent)", 0.7, false)}
 
-      {/* sync scanner — vertical accent line bridging the two layers */}
+      {/* sync scanner - vertical accent line bridging the two layers */}
       <line x1={scanX} y1={cy - 32} x2={scanX} y2={cy + 32}
             stroke="var(--accent)" strokeWidth="0.5"
             strokeOpacity="0.4" strokeDasharray="1 1.2" />
@@ -766,13 +766,13 @@ function TwinMirrorThumb() {
   );
 }
 
-// bim-scan: paper-themed (IEEE SIST 2023) — multi-stage AI + BIM analysis
+// bim-scan: paper-themed (IEEE SIST 2023) - multi-stage AI + BIM analysis
 // of construction-site objects. A BIM site grid (8×5 cells, hairlines)
 // is swept diagonally by an AI scan front. As the front passes over a
 // cell, it briefly highlights in accent (active analysis); behind it,
 // cells settle into either accent-filled "object detected" or a subtle
 // ink-filled "empty" state. The scan cycles continuously. Centered both
-// axes; calm sweep — no in-place pulsation.
+// axes; calm sweep - no in-place pulsation.
 function BimScanThumb() {
   const t = useClock();
   const cx = W / 2;
@@ -859,7 +859,7 @@ function BimScanThumb() {
   );
 }
 
-// build-stages: paper-themed (IOP ICSF 2023) — a multi-stage information
+// build-stages: paper-themed (IOP ICSF 2023) - a multi-stage information
 // system progressively assembles the model of a building. A 7×6 cell
 // grid composes a recognisable house silhouette; cells are added in
 // 4 stages (foundation → side walls → interior → roof). Each cycle the
@@ -930,10 +930,10 @@ function BuildStagesThumb() {
   );
 }
 
-// vr-tam: paper-themed (CEUR ITPM 2024) — VR adoption mapped onto a
+// vr-tam: paper-themed (CEUR ITPM 2024) - VR adoption mapped onto a
 // 3D-perspective tunnel. Four corner rays converge to a vanishing point
 // at the canvas center, and 4 nested rectangles sit at progressively
-// deeper depths — each representing a stage of the extended Technology
+// deeper depths - each representing a stage of the extended Technology
 // Acceptance Model (PU → Attitude → Intention → Use). One stage cycles
 // in accent (active adoption stage). Composition centered both axes.
 function VrTamThumb() {
@@ -941,7 +941,7 @@ function VrTamThumb() {
   const cx = W / 2;
   const cy = 46;     // panels' vertical center; room for TAM dots below
 
-  // Two overlapping rounded "eye panels" — the universal stereoscopic VR
+  // Two overlapping rounded "eye panels" - the universal stereoscopic VR
   // motif. Inside each, the same 3D wireframe cube is rendered with a
   // small horizontal stereo offset (left vs right eye view), and the cube
   // slowly rotates. Below the panels, 4 small dots cycle in accent —
@@ -953,7 +953,7 @@ function VrTamThumb() {
   const rightCx = cx + (panelW - overlap) / 2;
   const panelY = cy - panelH / 2;
 
-  // Wireframe cube — 3D rotation around y-axis, with simple perspective
+  // Wireframe cube - 3D rotation around y-axis, with simple perspective
   const angle = t * 0.4;
   const cosA = Math.cos(angle);
   const sinA = Math.sin(angle);
@@ -1020,11 +1020,11 @@ function VrTamThumb() {
             fill="none" stroke="var(--muted-2)" strokeWidth="0.7"
             strokeOpacity="0.55" />
 
-      {/* Wireframe cubes — left in ink, right in accent (stereo content) */}
+      {/* Wireframe cubes - left in ink, right in accent (stereo content) */}
       {drawCube(leftVerts, "var(--ink)", 0.6, "L")}
       {drawCube(rightVerts, "var(--accent)", 0.75, "R")}
 
-      {/* TAM stage dots — current stage in accent */}
+      {/* TAM stage dots - current stage in accent */}
       <line x1={tamLeft - 4} y1={tamY} x2={tamLeft + 3 * tamSpacing + 4} y2={tamY}
             stroke="var(--muted-2)" strokeOpacity="0.3" strokeWidth="0.4" />
       {[0, 1, 2, 3].map((i) => {
@@ -1041,9 +1041,9 @@ function VrTamThumb() {
   );
 }
 
-// urban-lora: paper-themed (CEUR ITPM 2024) — LoRa + GAN urban planning.
+// urban-lora: paper-themed (CEUR ITPM 2024) - LoRa + GAN urban planning.
 // A city-block grid (mostly muted ink cells) with a few accent cells
-// outlined in dashed accent — "GAN-generated" planning proposals. Four
+// outlined in dashed accent - "GAN-generated" planning proposals. Four
 // LoRa sensor nodes sit at strategic positions, each emitting two
 // continuously-expanding accent ping rings (wireless transmissions),
 // and a faint dashed mesh links the sensors (LoRa network topology).
@@ -1088,7 +1088,7 @@ function UrbanLoraThumb() {
 
   return (
     <ThumbFrame>
-      {/* City-block grid — generic muted cells + accent GAN-generated cells */}
+      {/* City-block grid - generic muted cells + accent GAN-generated cells */}
       {Array.from({ length: rows }).flatMap((_, r) =>
         Array.from({ length: cols }).map((_, c) => {
           const isGan = ganCells.has(`${c}-${r}`);
@@ -1107,7 +1107,7 @@ function UrbanLoraThumb() {
         })
       )}
 
-      {/* LoRa mesh — dashed accent links between sensors */}
+      {/* LoRa mesh - dashed accent links between sensors */}
       {sensors.map((s, i) => {
         const next = sensors[(i + 1) % sensors.length];
         return (
@@ -1130,7 +1130,7 @@ function UrbanLoraThumb() {
   );
 }
 
-// threat-detect: paper-themed (IEEE SIST 2024) — neural-network threat
+// threat-detect: paper-themed (IEEE SIST 2024) - neural-network threat
 // detection in network-traffic streams. Four horizontal signal channels
 // run noisy oscillations (normal traffic). One anomaly spike travels
 // across the canvas, hopping between channels each cycle: the affected
@@ -1199,13 +1199,13 @@ function ThreatDetectThumb() {
         )
       )}
 
-      {/* active channel — full path in ink first (so accent overlays nicely) */}
+      {/* active channel - full path in ink first (so accent overlays nicely) */}
       <polyline points={signalPath(channels[anomalyChannelIdx], anomalyChannelIdx)}
                 fill="none" stroke="var(--ink)" strokeWidth="0.9"
                 strokeOpacity="0.32" />
       {/* accent overlay on the anomaly window only via clipPath-free trick:
           paint the same signal with accent and clip via a stroked line within
-          the anomaly window — done with a small filled accent rect mask.
+          the anomaly window - done with a small filled accent rect mask.
           Simpler: re-render the local segment in accent. */}
       {(() => {
         const ch = channels[anomalyChannelIdx];
@@ -1246,7 +1246,7 @@ function ThreatDetectThumb() {
   );
 }
 
-// yolo-progression: paper-themed (CEUR ITTAP 2024) — a "study" of YOLOv8,
+// yolo-progression: paper-themed (CEUR ITTAP 2024) - a "study" of YOLOv8,
 // YOLOv9, YOLOv10 plotted as a 2D scatter (speed × accuracy). Three model
 // points form a clear progression toward the upper-right; a dashed accent
 // line traces v8 → v9 → v10. v10 is intrinsically larger and accent (best
@@ -1255,14 +1255,14 @@ function ThreatDetectThumb() {
 function YoloProgressionThumb() {
   const t = useClock();
 
-  // Plot bounds — centered on canvas
+  // Plot bounds - centered on canvas
   const px1 = 30, px2 = 130;     // x range (centered on cx=80)
   const py1 = 76, py2 = 24;      // y range (py1 bottom, py2 top; center=50)
 
   const models = [
     { rx: 0.28, ry: 0.30, accent: false },  // v8
     { rx: 0.55, ry: 0.58, accent: false },  // v9
-    { rx: 0.82, ry: 0.86, accent: true  },  // v10 — best
+    { rx: 0.82, ry: 0.86, accent: true  },  // v10 - best
   ];
   const points = models.map((m) => ({
     ...m,
@@ -1324,10 +1324,10 @@ function YoloProgressionThumb() {
   );
 }
 
-// yolo-classes: paper-themed (CEUR ITTAP 2024) — YOLOv5 3-class
+// yolo-classes: paper-themed (CEUR ITTAP 2024) - YOLOv5 3-class
 // recognition (Equipment / Tool / Vehicle) on a construction site.
 // Three horizontal "class lanes" carry small items left→right at
-// different speeds — squares (equipment), circles (tools), triangles
+// different speeds - squares (equipment), circles (tools), triangles
 // (vehicles). A few items per lane render in accent to suggest fresh
 // high-confidence detections. Composition centered both axes.
 function YoloClassesThumb() {
@@ -1394,7 +1394,7 @@ function YoloClassesThumb() {
   );
 }
 
-// site-yolo: paper-themed (DTESI 2024) — YOLOv5 multi-object detection
+// site-yolo: paper-themed (DTESI 2024) - YOLOv5 multi-object detection
 // on a construction site for resource + safety analysis. A ground line
 // at the bottom anchors a scene; multiple detected objects sit above
 // it as YOLO-style corner-bracket bboxes of varying sizes (resources
@@ -1468,7 +1468,7 @@ function SiteYoloThumb() {
   );
 }
 
-// preprocess: paper-themed (MDCS 2025) — image pre-processing for object
+// preprocess: paper-themed (MDCS 2025) - image pre-processing for object
 // recognition. A single central image grid cycles through 4 stages —
 // raw noise → smoothed Gaussian → edge contour → recognized object —
 // while a step indicator below tracks the active stage. Trapezoidal
@@ -1518,7 +1518,7 @@ function PreprocessThumb() {
         useAccent: ringDist < 0.85,
       };
     }
-    // stage 3: recognized object — central cluster + dim halo
+    // stage 3: recognized object - central cluster + dim halo
     return {
       intensity: dist < 1.6 ? 0.9 : dist < 2.7 ? 0.35 : 0.06,
       useAccent: dist < 1.6,
@@ -1573,7 +1573,7 @@ function PreprocessThumb() {
   );
 }
 
-// info-protect: paper-themed (MDCS 2025) — defense-in-depth visual for
+// info-protect: paper-themed (MDCS 2025) - defense-in-depth visual for
 // regulatory framework around technical information protection. Four
 // nested rounded-rectangle layers (outermost = regulatory boundary,
 // dashed; innermost = technical control, solid) wrapping a central
@@ -1586,7 +1586,7 @@ function InfoProtectThumb() {
 
   const assetW = 14, assetH = 10;
   const layers = [
-    { sx: 5,  sy: 5,  dash: "none"   },   // innermost — technical control
+    { sx: 5,  sy: 5,  dash: "none"   },   // innermost - technical control
     { sx: 12, sy: 10, dash: "none"   },   // procedural
     { sx: 19, sy: 15, dash: "2 1.5"  },   // policy
     { sx: 28, sy: 21, dash: "3 2"    },   // outer regulatory framework
@@ -1607,7 +1607,7 @@ function InfoProtectThumb() {
 
   return (
     <ThumbFrame>
-      {/* Layers — render outermost first so inner ones sit on top */}
+      {/* Layers - render outermost first so inner ones sit on top */}
       {[...layers].reverse().map((layer, idx) => {
         const i = layers.length - 1 - idx;
         const w = assetW + layer.sx * 2;
@@ -1644,11 +1644,11 @@ function InfoProtectThumb() {
   );
 }
 
-// grad-cam: paper-themed (CEUR ITTAP 2025) — Grad-CAM heatmap for
+// grad-cam: paper-themed (CEUR ITTAP 2025) - Grad-CAM heatmap for
 // multimodal sentiment analysis of urban revitalization imagery. A
 // subtle full-canvas patch grid (the image) with a Grad-CAM-style
 // contour heatmap (concentric ellipses + soft fill) that relocates
-// between 3 attention zones with a trapezoidal fade — no pulsing in
+// between 3 attention zones with a trapezoidal fade - no pulsing in
 // place. Composition centered both axes.
 function GradCamThumb() {
   const t = useClock();
@@ -1720,7 +1720,7 @@ function GradCamThumb() {
   );
 }
 
-// face-recognition: paper-themed (IEEE SIST 2025) — automated face
+// face-recognition: paper-themed (IEEE SIST 2025) - automated face
 // recognition pipeline: a corner-bracket bbox (detection) + 5-point
 // landmark mesh (localisation) at the top, with a horizontal embedding
 // vector below (the CNN-extracted feature vector used for identity
@@ -1759,7 +1759,7 @@ function FaceRecognitionThumb() {
   const bboxY = cyFace - bboxH / 2;
   const cornerLen = 5;
 
-  // Embedding vector — small varying-height bars below the bbox
+  // Embedding vector - small varying-height bars below the bbox
   const vecCount = 26;
   const vecW = bboxW;
   const vecBaseY = 75;
@@ -1802,7 +1802,7 @@ function FaceRecognitionThumb() {
         );
       })}
 
-      {/* face bbox — corner brackets only (YOLO-style) */}
+      {/* face bbox - corner brackets only (YOLO-style) */}
       <g fill="none" stroke="var(--accent)" strokeWidth="0.9" strokeOpacity="0.65">
         <polyline points={`${bboxX},${bboxY + cornerLen} ${bboxX},${bboxY} ${bboxX + cornerLen},${bboxY}`} />
         <polyline points={`${bboxX + bboxW - cornerLen},${bboxY} ${bboxX + bboxW},${bboxY} ${bboxX + bboxW},${bboxY + cornerLen}`} />
@@ -1820,7 +1820,7 @@ function FaceRecognitionThumb() {
   );
 }
 
-// bim-cascade: paper-themed (FRUCT 2024) — multi-stage classification of
+// bim-cascade: paper-themed (FRUCT 2024) - multi-stage classification of
 // construction-site BIM objects. A 3-stage left-to-right cascade: 1 root
 // → 3 broad-category branches → 6 leaves (2 per branch) drawn with
 // different shapes (circles/squares/triangles) to suggest heterogeneous
@@ -1829,7 +1829,7 @@ function FaceRecognitionThumb() {
 function BimCascadeThumb() {
   const t = useClock();
 
-  // Layout — 3 stages, centered on canvas (cx=80)
+  // Layout - 3 stages, centered on canvas (cx=80)
   const stage0X = 20;
   const stage1X = 80;
   const stage2X = 140;
@@ -1889,7 +1889,7 @@ function BimCascadeThumb() {
       <circle cx={root.x} cy={root.y} r="3"
               fill="var(--ink)" opacity="0.85" />
 
-      {/* stage 1 — broad categories */}
+      {/* stage 1 - broad categories */}
       {stage1Nodes.map((node, i) => {
         const active = i === activeBranchIdx;
         return (
@@ -1899,7 +1899,7 @@ function BimCascadeThumb() {
         );
       })}
 
-      {/* stage 2 — leaves with different shapes per branch */}
+      {/* stage 2 - leaves with different shapes per branch */}
       {stage2Nodes.map((leaf, i) => {
         const active = i === activeLeafIdx;
         const op = active ? 0.6 + 0.35 * focus : 0.45;
@@ -1928,7 +1928,7 @@ function BimCascadeThumb() {
   );
 }
 
-// yolo-compare: paper-themed (DTESI 2024 · Best Paper) — comparative
+// yolo-compare: paper-themed (DTESI 2024 · Best Paper) - comparative
 // analysis of YOLOv8, v9, v10 for vehicle-damage detection. A central
 // damage zone (subtle accent fill) sits inside three nested bounding
 // boxes drawn with YOLO-style corner brackets: outermost = YOLOv8 (off),
@@ -1973,7 +1973,7 @@ function YoloCompareThumb() {
     );
   };
 
-  // Performance bars (mAP-style) — v10 wins, accent
+  // Performance bars (mAP-style) - v10 wins, accent
   const barLengths = [22, 30, 42];
   const barColors = ["var(--ink)", "var(--ink)", "var(--accent)"];
   const barBaseOps = [0.4, 0.55, 0.85];
@@ -2033,7 +2033,7 @@ function YoloCompareThumb() {
   );
 }
 
-// neuro-phys: paper-themed (Springer LNNS 2025) — NeuroPhysNet hybrid
+// neuro-phys: paper-themed (Springer LNNS 2025) - NeuroPhysNet hybrid
 // neural network for cyber-physical systems. A smooth Lissajous-style
 // phase trajectory (the physics-constrained NN prediction, accent dashed),
 // noisy ink data points scattered around it (sensor measurements), and a
@@ -2097,14 +2097,14 @@ function NeuroPhysThumb() {
       <circle cx={cx} cy={cy} r="1.4"
               fill="var(--muted-2)" opacity="0.55" />
 
-      {/* current system state — accent head sweeping the loop */}
+      {/* current system state - accent head sweeping the loop */}
       <circle cx={headX} cy={headY} r="2.6"
               fill="var(--accent)" opacity="0.95" />
     </ThumbFrame>
   );
 }
 
-// pred-vs-obs: paper-themed (Astana IT University Journal 2025) — the
+// pred-vs-obs: paper-themed (Astana IT University Journal 2025) - the
 // canonical predicted-vs-observed scatter on a 1:1 diagonal. Many ink dots
 // hug the accent dashed diagonal (high R²); a few accent dots stand out
 // at higher discharge values; dot radius grows along the diagonal to
@@ -2177,10 +2177,10 @@ function PredVsObsThumb() {
   );
 }
 
-// sensor-graph: paper-themed (IEEE SIST 2025) — top: spatial sensor graph
+// sensor-graph: paper-themed (IEEE SIST 2025) - top: spatial sensor graph
 // (GCN side) with one accent-highlighted active sensor; bottom: noisy
 // historical traces (multiple sensors) ending at a "now" marker, then a
-// clean accent forecast line continuing into a faint forecast cone — the
+// clean accent forecast line continuing into a faint forecast cone - the
 // LSTM temporal-forecast side. Composition centered both axes.
 function SensorGraphThumb() {
   const t = useClock();
@@ -2262,7 +2262,7 @@ function SensorGraphThumb() {
   );
 }
 
-// hydro-ensemble: paper-themed (Water 2025) — noisy base learners (XGB/LGBM/
+// hydro-ensemble: paper-themed (Water 2025) - noisy base learners (XGB/LGBM/
 // CatBoost/NN) blending into a clean meta-ensemble prediction, over a row
 // of GRDC gauging stations and a forecast cone on the right edge.
 function HydroEnsembleThumb() {
@@ -2271,15 +2271,15 @@ function HydroEnsembleThumb() {
   // Composition vertically centered around y = H/2 (50).
   // Content span: trend curves (≈21..59) + station row (≈70..82) → center ≈51.
   // Station row and baseline sit below the curves with symmetric padding.
-  const baselineY = H - 18;           // 82  — hairline baseline
+  const baselineY = H - 18;           // 82  - hairline baseline
   const tickTopY = baselineY - 6;     // 76
-  const stationY = baselineY - 8;     // 74  — station circle
+  const stationY = baselineY - 8;     // 74  - station circle
   const trendCenterY = 40;            // trend oscillates ±18 around 40 (22..58)
 
   const trend = (x) =>
     trendCenterY + Math.sin(x * 0.045 + 0.4) * 13 + Math.sin(x * 0.018) * 5;
 
-  // Horizontal layout — already symmetric: curves span [6, 154], stations
+  // Horizontal layout - already symmetric: curves span [6, 154], stations
   // evenly spaced with 12px margins on both sides.
   const baseLines = [];
   for (let k = 0; k < 4; k++) {
@@ -2338,7 +2338,7 @@ function HydroEnsembleThumb() {
   );
 }
 
-// xai-multimodal: paper-themed (REKS 2025) — left: text token rows with
+// xai-multimodal: paper-themed (REKS 2025) - left: text token rows with
 // 4 persistent attention highlights; right: ViT patch grid where specific
 // patches light up in accent corresponding to the currently focused token.
 // A token's "focus" cycles slowly with a trapezoidal hold-fade envelope
@@ -2363,7 +2363,7 @@ function XaiMultimodalThumb() {
   const gridW = cols * cellW;           // 64
   const gridH = rows * cellH;           // 40
   const gridX = W / 2 + 8;              // divider(80) + 8 gap → gridX=88
-  const gridY = (H - gridH) / 2;        // 30 — centered vertically
+  const gridY = (H - gridH) / 2;        // 30 - centered vertically
 
   // Each highlighted token maps to a small cluster of patches it "attends"
   const tokenToPatches = [
@@ -2374,7 +2374,7 @@ function XaiMultimodalThumb() {
   ];
   const activeSet = new Set(tokenToPatches[focusIdx].map(([c, r]) => `${c}-${r}`));
 
-  // Centroid of the focused cluster — arc target
+  // Centroid of the focused cluster - arc target
   const cluster = tokenToPatches[focusIdx];
   const cx = cluster.reduce((s, [c]) => s + c, 0) / cluster.length;
   const cy = cluster.reduce((s, [, r]) => s + r, 0) / cluster.length;
@@ -2447,7 +2447,7 @@ function XaiMultimodalThumb() {
             stroke="var(--muted-2)" strokeWidth="0.4"
             strokeDasharray="1.5 1.5" opacity="0.45" />
 
-      {/* text tokens — non-focused highlights stay dim; focused glows with focus */}
+      {/* text tokens - non-focused highlights stay dim; focused glows with focus */}
       {allTokens.map((tk, i) => (
         <g key={i}>
           <rect x={tk.x} y={tk.y} width={tk.w} height={rectH} rx="0.8"
@@ -2461,7 +2461,7 @@ function XaiMultimodalThumb() {
         </g>
       ))}
 
-      {/* ViT patch grid — active overlay fully tied to focus (0 when fading) */}
+      {/* ViT patch grid - active overlay fully tied to focus (0 when fading) */}
       {patches.map((p, i) => (
         <g key={i}>
           <rect x={p.x + 0.6} y={p.y + 0.6}
@@ -2475,7 +2475,7 @@ function XaiMultimodalThumb() {
         </g>
       ))}
 
-      {/* cross-modal attention arc — fully proportional to focus */}
+      {/* cross-modal attention arc - fully proportional to focus */}
       {focusedToken && (() => {
         const sx = focusedToken.x + focusedToken.w + 1;
         const sy = focusedToken.y + rectH / 2;
@@ -2577,7 +2577,7 @@ function DigitalTwinThumb() {
   const cx = W / 2;     // 80
   const cy = H / 2;     // 50
 
-  // BIM model — front facade grid, centered
+  // BIM model - front facade grid, centered
   const boxW = 64, boxH = 38;
   const fx = cx - boxW / 2;     // 48
   const fy = cy - boxH / 2;     // 31
@@ -2599,7 +2599,7 @@ function DigitalTwinThumb() {
     );
   });
 
-  // Multi-agent inspection — 3 dots orbiting the grid on an elliptical path
+  // Multi-agent inspection - 3 dots orbiting the grid on an elliptical path
   const orbitRx = 50, orbitRy = 28;
   const agents = [];
   for (let i = 0; i < 3; i++) {
@@ -2653,7 +2653,7 @@ function DigitalTwinThumb() {
   );
 }
 
-// budova: BUDOVA project — Building Ukrainian Domain-Specific Open Voice
+// budova: BUDOVA project - Building Ukrainian Domain-Specific Open Voice
 // & Text Archives. Top: animated speech waveform (voice corpus). Bottom:
 // rows of text tokens with periodic NER-style highlights (construction-domain
 // annotations). Composition centered both axes.

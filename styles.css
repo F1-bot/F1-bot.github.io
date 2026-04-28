@@ -1,5 +1,5 @@
 /* =============================================================
-   Serhii Dolhopolov — personal site
+   Serhii Dolhopolov - personal site
    Google Research-inspired: editorial type, quiet palette, single accent
    ============================================================= */
 
@@ -16,7 +16,7 @@
   --hairline-strong: #d6d5d2;
   --thumb-bg:  #f4f3f0;
 
-  /* accent — overridden by tweaks */
+  /* accent - overridden by tweaks */
   --accent:    #3b73d4;
   --accent-soft: color-mix(in oklab, var(--accent) 14%, transparent);
 
@@ -830,7 +830,7 @@ html[data-theme="dark"] .status-pill.approved { color: #e8b66a; border-color: #7
 .news-toggle-arr { transition: transform .2s; display: inline-block; }
 .news-toggle-arr.up { transform: rotate(180deg); }
 
-/* Teaching — compact two-column list */
+/* Teaching - compact two-column list */
 .teach-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
 .teach-list li {
   display: grid;
@@ -938,7 +938,7 @@ html[data-theme="dark"] .status-pill.approved { color: #e8b66a; border-color: #7
 ::selection { background: var(--accent-soft); color: var(--ink); }
 
 /* =============================================================
-   Mobile responsiveness — refinements layered on top of existing
+   Mobile responsiveness - refinements layered on top of existing
    single-column breakpoints (900px / 700px / 680px / 560px).
    ============================================================= */
 
@@ -957,7 +957,7 @@ html[data-theme="dark"] .status-pill.approved { color: #e8b66a; border-color: #7
   .sec-head { margin-bottom: 24px; padding-bottom: 14px; }
 }
 
-/* Hero — smaller display name, tighter photo, looser link rows */
+/* Hero - smaller display name, tighter photo, looser link rows */
 @media (max-width: 560px) {
   .hero { padding: 24px 0 var(--sec-gap); }
   .hero-name { font-size: clamp(34px, 9vw, 50px); }
@@ -980,7 +980,7 @@ html[data-theme="dark"] .status-pill.approved { color: #e8b66a; border-color: #7
   .pub-meta-top { flex-wrap: wrap; row-gap: 4px; }
 }
 
-/* Experience — keep logo column but allow long company names to breathe */
+/* Experience - keep logo column but allow long company names to breathe */
 @media (max-width: 560px) {
   .exp-company-head { gap: 12px; margin-bottom: 14px; }
   .exp-company-name { font-size: 18px; line-height: 1.25; }
@@ -990,7 +990,7 @@ html[data-theme="dark"] .status-pill.approved { color: #e8b66a; border-color: #7
   .exp-role-note { font-size: 13px; }
 }
 
-/* Projects — stack proj-meta dl on narrow, smaller status pill */
+/* Projects - stack proj-meta dl on narrow, smaller status pill */
 @media (max-width: 560px) {
   .proj-desc { font-size: 14px; line-height: 1.55; }
   .proj-meta { grid-template-columns: 1fr; gap: 4px 0; }
@@ -999,7 +999,7 @@ html[data-theme="dark"] .status-pill.approved { color: #e8b66a; border-color: #7
   .proj-sponsor { font-size: 11px; padding: 5px 10px 5px 8px; }
 }
 
-/* Awards — stack the 160px date column under the body on phones */
+/* Awards - stack the 160px date column under the body on phones */
 @media (max-width: 560px) {
   .award-item { grid-template-columns: 1fr; gap: 4px; padding: 14px 0; align-items: stretch; }
   .award-body { order: 1; }
@@ -1018,12 +1018,12 @@ html[data-theme="dark"] .status-pill.approved { color: #e8b66a; border-color: #7
   .teach-course { font-size: 14px; }
 }
 
-/* Side scroll prevention — keep long URLs/strings wrapping on narrow */
+/* Side scroll prevention - keep long URLs/strings wrapping on narrow */
 @media (max-width: 480px) {
   .pub-authors, .pub-venue, .row-note, .exp-role-meta { word-break: break-word; }
 }
 
-/* Footer — smaller email + tighter base on phones */
+/* Footer - smaller email + tighter base on phones */
 @media (max-width: 480px) {
   .site-foot { padding: 36px 0 28px; }
   .foot-lead { font-size: 16px; }

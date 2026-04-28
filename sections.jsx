@@ -354,7 +354,7 @@ function Awards() {
   );
 }
 
-// ---- News list — scrollable when the archive grows ------------------------
+// ---- News list - scrollable when the archive grows ------------------------
 function NewsList() {
   const useScroll = NEWS.length > 4;
   return (

@@ -6,14 +6,14 @@ const PROFILE = {
   name: "Serhii Dolhopolov",
   role: "PhD Student · Computer Science",
   affiliation: "Kyiv National University of Construction and Architecture",
-  affiliationShort: "KNUBA",
+  affiliationShort: "KNUCA",
   location: "Kyiv, Ukraine",
   email: "dolhopolov_sy@knuba.edu.ua",
   photo: "assets/serhii.webp",
   about: [
-    "I am a PhD student at Kyiv National University of Construction and Architecture, working at the intersection of machine learning, computer vision, and applied AI for construction, urban planning, and cyber-physical systems.",
-    "My research focuses on deep learning for object detection on construction sites, BIM-driven digital twins, explainable models for multimodal data, and graph/sequence architectures for environmental and sensor forecasting. I enjoy turning messy real-world signals into models that are fast, interpretable, and useful.",
-    "Before the PhD I worked as an engineer on a mix of data, ML and UI problems — a background I try to keep alive in my academic work.",
+    "I am a PhD student in Computer Science at Kyiv National University of Construction and Architecture (KNUCA), advised by Dr. Tetyana Honcharenko. I work on natural language processing - particularly for low-resource Ukrainian - together with computer vision and applied AI for construction, urban planning, and cyber-physical systems.",
+    "I lead BUDOVA, an open Ukrainian voice & text archive selected by Microsoft Research's LINGUA Open Call, where we build NLP resources for a low-resource language with construction-domain NER annotations and an ASR baseline. In parallel I head a state-funded project on AI-agent digital twins for damaged infrastructure, and contribute to work on multimodal sentiment analysis with explainable AI.",
+    "My papers have appeared in Water (MDPI, Q1), REKS, IEEE SIST, FRUCT, Springer LNNS and CEUR-indexed proceedings; one received the DTESI 2024 Best Paper Award. I hold the Scholarship of the President of Ukraine for PhD students and have been recognized by the Victor Pinchuk Foundation's Zavtra.UA program.",
   ],
 };
 
@@ -312,7 +312,7 @@ const TOPIC_LABEL = {
 const WORK = [
   {
     company: "Kyiv National University of Construction and Architecture",
-    companyShort: "KNUBA",
+    companyShort: "KNUCA",
     logo: "assets/knuba-logo.jpg",
     logoType: "image",
     totalDates: "2023 — Present",
@@ -378,16 +378,17 @@ const PROJECTS = [
     title: "LINGUA · BUDOVA",
     subtitle: "Building Ukrainian domain-specific open voice & text archives",
     role: "Head",
-    members: ["S. Dolhopolov (head)", "KNUBA research team", "Community contributors"],
+    members: ["S. Dolhopolov (head)", "KNUCA research team", "Community contributors"],
     funding: "48 000 USD + Azure credits · Microsoft Research LINGUA program",
     dates: "2026 — 2027",
     status: "Active",
     statusNote: "Supported by Microsoft Research's LINGUA program",
     sponsor: "Microsoft Research",
     description:
-      "The first open, comprehensive Ukrainian construction-domain language dataset — addressing a critical digital language gap for a low-resource language with 30–46 million speakers. The team is producing 100+ hours of dialectally diverse speech data and 100M+ tokens of technical text, with construction-specific NER annotations and a baseline ASR model targeting <25 % WER. All resources are released under CC-BY 4.0 via Hugging Face and Zenodo, with full GDPR-compliant ethical protocols.",
+      "The first open, comprehensive Ukrainian construction-domain language dataset - addressing a critical digital language gap for a low-resource language with 30–46 million speakers. The team is producing 100+ hours of dialectally diverse speech data and 100M+ tokens of technical text, with construction-specific NER annotations and a baseline ASR model targeting <25 % WER. All resources are released under CC-BY 4.0 via Hugging Face and Zenodo, with full GDPR-compliant ethical protocols.",
     links: [
       { label: "budov.org", url: "https://budov.org" },
+      { label: "Hugging Face", url: "https://huggingface.co/BUDOVA" },
       { label: "LINGUA awardees", url: "https://www.microsoft.com/en-us/research/academic-program/lingua-expanding-europes-voices-in-ai/" },
     ],
     thumb: "budova",
@@ -494,7 +495,7 @@ const EDUCATION = [
   },
 ];
 
-// News — compact with external links.
+// News - compact with external links.
 const NEWS = [
   {
     date: "Mar 26, 2026",
@@ -508,7 +509,7 @@ const NEWS = [
   },
   {
     date: "Jan 28, 2026",
-    text: "BUDOVA — Building Ukrainian Domain-Specific Open Voice & Text Archives — selected by Microsoft AI for Good Lab in the LINGUA Open Call (16 languages, 10 countries).",
+    text: "BUDOVA - Building Ukrainian Domain-Specific Open Voice & Text Archives - selected by Microsoft AI for Good Lab in the LINGUA Open Call (16 languages, 10 countries).",
     url: "https://www.microsoft.com/en-us/research/academic-program/lingua-expanding-europes-voices-in-ai/",
   },
   {
@@ -523,12 +524,12 @@ const NEWS = [
   },
   {
     date: "Dec 21, 2025",
-    text: "Won 1st place in the «Zavtra.UA» essay competition on «Artificial Intelligence: opportunity or threat to democracy?» — prize includes WEF Davos participation with the Victor Pinchuk Foundation.",
+    text: "Won 1st place in the «Zavtra.UA» essay competition on «Artificial Intelligence: opportunity or threat to democracy?» - prize includes WEF Davos participation with the Victor Pinchuk Foundation.",
     url: "https://www.facebook.com/share/p/1B5Y4CVnTT/",
   },
   {
     date: "Dec 11, 2025",
-    text: "«Modeling AI Tasks (Part 1)» (Dolhopolov, Honcharenko · KNUBA · 2025) — 1st place in the «Textbooks» category at the NAN VO Ukraine «Best Edition 2025» competition.",
+    text: "«Modeling AI Tasks (Part 1)» (Dolhopolov, Honcharenko · KNUCA · 2025) - 1st place in the «Textbooks» category at the NAN VO Ukraine «Best Edition 2025» competition.",
     url: "http://nanvou.org.ua/Edition%20of%20the%20year/%D0%9F%D1%80%D0%BE%D1%82%D0%BE%D0%BA%D0%BE%D0%BB_%D0%BA%D0%BE%D0%BD%D0%BA%D1%83%D1%80%D1%81.pdf",
   },
   {
@@ -543,7 +544,7 @@ const NEWS = [
   },
   {
     date: "Nov 04, 2025",
-    text: "Took part in the First International Kyiv Forum on Critical Infrastructure Protection (CTF + DFIR exercises) with the KNUBA team.",
+    text: "Took part in the First International Kyiv Forum on Critical Infrastructure Protection (CTF + DFIR exercises) with the KNUCA team.",
     url: "https://www.linkedin.com/feed/update/urn:li:activity:7395767301259796480/",
   },
   {
@@ -553,7 +554,7 @@ const NEWS = [
   },
   {
     date: "Sep 27, 2025",
-    text: "Paper presented at STUE-2025 (Kharkiv) — «Fusing Grad-CAM and Textual Explainable AI for Urban Sentiment Assessment».",
+    text: "Paper presented at STUE-2025 (Kharkiv) - «Fusing Grad-CAM and Textual Explainable AI for Urban Sentiment Assessment».",
     url: "https://stue.kname.edu.ua/conference-agenda/#tab-16833",
   },
   {
@@ -593,12 +594,12 @@ const NEWS = [
   },
   {
     date: "Apr 24, 2025",
-    text: "Presented «Neural Network Methods for Multimodal Content Analysis in Urban Revitalization» at the KNUBA Sci-Tech Student Conference.",
+    text: "Presented «Neural Network Methods for Multimodal Content Analysis in Urban Revitalization» at the KNUCA Sci-Tech Student Conference.",
     url: "https://gisut.knuba.edu.ua/2025/04/29/%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%BD%D1%8F-%D1%81%D1%82%D1%83%D0%B4%D0%B5%D0%BD%D1%82%D1%81%D1%8C%D0%BA%D0%BE%D1%97-%D0%BD%D0%B0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D1%97-%D0%BA%D0%BE/",
   },
   {
     date: "Apr 21, 2025",
-    text: "Our KNUBA team ranked in the Top 10 at UA-EE Cyber Shield (Tallinn Mechanism) for critical-infrastructure cyber-defence.",
+    text: "Our KNUCA team ranked in the Top 10 at UA-EE Cyber Shield (Tallinn Mechanism) for critical-infrastructure cyber-defence.",
     url: "https://www.knuba.edu.ua/komanda-knuba-vvijshla-v-desyatku-najkrashhyh-u-kiberzahysti-krytychnoyi-infrastruktury-na-mizhnarodnyh-zmagannyah/",
   },
   {
@@ -629,7 +630,7 @@ const VOLUNTEER = [
   {
     role: "Event Volunteer",
     org: "RECOVERY Rehabilitation Network",
-    note: "Supporting Ukraine's largest network of innovative rehabilitation centers for wounded soldiers — 16 centers, 22 000+ patients.",
+    note: "Supporting Ukraine's largest network of innovative rehabilitation centers for wounded soldiers - 16 centers, 22 000+ patients.",
     url: "https://yes-ukraine.org/en/",
     dates: "2024 — Present",
   },
