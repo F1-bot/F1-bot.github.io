@@ -11,7 +11,7 @@ const PROFILE = {
   email: "dolhopolov_sy@knuba.edu.ua",
   photo: "assets/serhii.webp",
   about: [
-    "I am a PhD student in Computer Science at Kyiv National University of Construction and Architecture (KNUCA), advised by Dr. Tetyana Honcharenko. I work on natural language processing - particularly for low-resource Ukrainian - together with computer vision and applied AI for construction, urban planning, and cyber-physical systems.",
+    "I am a PhD student in Computer Science at Kyiv National University of Construction and Architecture (KNUCA), advised by Dr. Tetyana Honcharenko. My published work spans computer vision for construction site analytics, BIM-driven digital twins, multimodal sentiment analysis with explainable AI, graph and sequence models for environmental and sensor forecasting, and natural language processing for the low-resource Ukrainian language.",
     "I lead BUDOVA, an open Ukrainian voice & text archive selected by Microsoft Research's LINGUA Open Call, where we build NLP resources for a low-resource language with construction-domain NER annotations and an ASR baseline. In parallel I head a state-funded project on AI-agent digital twins for damaged infrastructure, and contribute to work on multimodal sentiment analysis with explainable AI.",
     "My papers have appeared in Water (MDPI, Q1), REKS, IEEE SIST, FRUCT, Springer LNNS and CEUR-indexed proceedings; one received the DTESI 2024 Best Paper Award. I hold the Scholarship of the President of Ukraine for PhD students and have been recognized by the Victor Pinchuk Foundation's Zavtra.UA program.",
   ],
