@@ -19,7 +19,7 @@ const PROFILE = {
 
 // Prioritized: CV first, then scholarly identifiers, then social. Dribbble removed.
 const LINKS = [
-  { label: "CV",               url: "https://f1-bot.github.io/CV.pdf",                                                   kind: "primary" },
+  { label: "CV",               url: "assets/CV.pdf",                                                                     kind: "primary" },
   { label: "Google Scholar",   url: "https://scholar.google.com/citations?user=I54c3uQAAAAJ&hl=en",                      kind: "scholarly" },
   { label: "ORCID",            url: "https://orcid.org/0000-0001-9418-0943",                                             kind: "scholarly" },
   { label: "Scopus",           url: "https://www.scopus.com/authid/detail.uri?authorId=57994271400",                     kind: "scholarly" },
@@ -498,6 +498,10 @@ const EDUCATION = [
 // News - compact with external links.
 const NEWS = [
   {
+    date: "Apr 28, 2026",
+    text: "Took part in Resilient Trident 2026, a multinational cybersecurity tabletop exercise hosted in Bucharest, bringing together teams from Ukraine, Romania, Moldova, and EU partners.",
+  },
+  {
     date: "Mar 26, 2026",
     text: "Presented at Investment Building Congress 2026 with I. Bosenko on the AI-agent system for monitoring and verifying digital twins of damaged infrastructure objects.",
     url: "https://www.facebook.com/kafedraitknuba/posts/122216616578289378/",
@@ -615,7 +619,8 @@ const TEACHING = [
   { course: "Neural networks and AI systems in education",            dates: "Fall 24/25" },
   { course: "Modeling of artificial intelligence tasks",              dates: "Spring 24/25/26" },
   { course: "Object-oriented programming",                            dates: "Fall 23/24/25 · Spring 24/25/26" },
-  { course: "Artificial intelligence and neural networks",            dates: "Spring 25/26" },
+  { course: "Artificial intelligence and neural networks",            dates: "Spring 25" },
+  { course: "Applied AI and MLOps in the Software Development Process", dates: "Spring 26" },
   { course: "Artificial Intelligence: Foundations and Frontiers 🚀",  dates: "Spring 24" },
 ];
 

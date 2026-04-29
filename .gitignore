@@ -5,6 +5,8 @@
 # Local source materials (paper drafts, scans, exports)
 *.pdf
 *.txt
+# but keep the public CV
+!assets/CV.pdf
 
 # Legacy / unused files not used by the site
 uploads/
