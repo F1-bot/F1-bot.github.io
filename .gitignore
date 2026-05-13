@@ -17,3 +17,6 @@ tweaks-panel.jsx
 Thumbs.db
 *.swp
 *.swo
+
+# Node deps (used only at build time for JSX→JS pre-compilation)
+node_modules/
