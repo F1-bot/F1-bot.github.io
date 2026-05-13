@@ -185,9 +185,10 @@
     }
   </style>
 
-  <!-- React (production minified) — JSX is pre-compiled to dist/ via `npm run build` -->
-  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
+  <!-- React (production minified) — JSX is pre-compiled to dist/ via `npm run build`.
+       defer = parallel download, execute in order after DOM parse (non-blocking). -->
+  <script defer src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+  <script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
 </head>
 <body>
   <div id="root">
@@ -198,15 +199,19 @@
     </div>
   </div>
 
-  <!-- Pre-compiled bundles. Load order matters: data → thumbs → sections → app -->
-  <script src="dist/data.js?v=9"></script>
-  <script src="dist/thumbs.js?v=9"></script>
-  <script src="dist/sections.js?v=9"></script>
-  <script src="dist/app.js?v=9"></script>
+  <!-- Pre-compiled bundles. defer keeps execution order (data → thumbs → sections → app)
+       while allowing parallel download and non-blocking HTML parse. -->
+  <script defer src="dist/data.js?v=10"></script>
+  <script defer src="dist/thumbs.js?v=10"></script>
+  <script defer src="dist/sections.js?v=10"></script>
+  <script defer src="dist/app.js?v=10"></script>
 
   <script>
-    var root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(React.createElement(App));
+    // Wait for deferred scripts (React, ReactDOM, dist/*.js) to finish before mounting.
+    document.addEventListener('DOMContentLoaded', function () {
+      var root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(App));
+    });
   </script>
 </body>
 </html>

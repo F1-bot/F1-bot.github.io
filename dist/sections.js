@@ -175,13 +175,18 @@ function Publications() {
     className: "pub-controls"
   }, /*#__PURE__*/React.createElement("div", {
     className: "tabs",
-    role: "tablist"
+    role: "tablist",
+    "aria-label": "Publication filters"
   }, /*#__PURE__*/React.createElement("button", {
+    role: "tab",
+    "aria-selected": tab === "selected",
     className: `tab ${tab === "selected" ? "on" : ""}`,
     onClick: () => setTab("selected")
   }, "Selected ", /*#__PURE__*/React.createElement("span", {
     className: "tab-count"
   }, counts.selected)), /*#__PURE__*/React.createElement("button", {
+    role: "tab",
+    "aria-selected": tab === "all",
     className: `tab ${tab === "all" ? "on" : ""}`,
     onClick: () => setTab("all")
   }, "All ", /*#__PURE__*/React.createElement("span", {

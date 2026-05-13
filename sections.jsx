@@ -151,11 +151,17 @@ function Publications() {
       </SectionHead>
 
       <div className="pub-controls">
-        <div className="tabs" role="tablist">
-          <button className={`tab ${tab==="selected"?"on":""}`} onClick={() => setTab("selected")}>
+        <div className="tabs" role="tablist" aria-label="Publication filters">
+          <button role="tab"
+                  aria-selected={tab === "selected"}
+                  className={`tab ${tab==="selected"?"on":""}`}
+                  onClick={() => setTab("selected")}>
             Selected <span className="tab-count">{counts.selected}</span>
           </button>
-          <button className={`tab ${tab==="all"?"on":""}`} onClick={() => setTab("all")}>
+          <button role="tab"
+                  aria-selected={tab === "all"}
+                  className={`tab ${tab==="all"?"on":""}`}
+                  onClick={() => setTab("all")}>
             All <span className="tab-count">{counts.all}</span>
           </button>
         </div>
