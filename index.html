@@ -140,11 +140,11 @@
   }
   </script>
 
-  <!-- Fonts (Newsreader and Source Serif 4 dropped — unused in styles.css) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Fonts: self-hosted (Inter Tight + JetBrains Mono, latin + cyrillic subsets only).
+       Preload latin Inter Tight 400 — covers most visible body text. -->
   <link rel="preconnect" href="https://unpkg.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preload" href="assets/fonts/NGSwv5HMAFg6IuGlBNMjxLsH8ag.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="assets/fonts.css?v=11" />
 
   <!-- Apply saved/preferred theme synchronously before paint, so the loader
        picks up the correct background via CSS vars and there is no flash. -->
@@ -201,10 +201,10 @@
 
   <!-- Pre-compiled bundles. defer keeps execution order (data → thumbs → sections → app)
        while allowing parallel download and non-blocking HTML parse. -->
-  <script defer src="dist/data.js?v=10"></script>
-  <script defer src="dist/thumbs.js?v=10"></script>
-  <script defer src="dist/sections.js?v=10"></script>
-  <script defer src="dist/app.js?v=10"></script>
+  <script defer src="dist/data.js?v=11"></script>
+  <script defer src="dist/thumbs.js?v=11"></script>
+  <script defer src="dist/sections.js?v=11"></script>
+  <script defer src="dist/app.js?v=11"></script>
 
   <script>
     // Wait for deferred scripts (React, ReactDOM, dist/*.js) to finish before mounting.
