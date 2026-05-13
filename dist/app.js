@@ -1,3 +1,4 @@
+(function () {
 // Main app shell with theme + scroll spy
 const {
   useEffect,
@@ -118,3 +119,4 @@ function App() {
   }, /*#__PURE__*/React.createElement(Hero, null), /*#__PURE__*/React.createElement(Publications, null), /*#__PURE__*/React.createElement(Experience, null), /*#__PURE__*/React.createElement(Projects, null), /*#__PURE__*/React.createElement(Awards, null), /*#__PURE__*/React.createElement(Secondary, null), /*#__PURE__*/React.createElement(Footer, null))));
 }
 window.App = App;
+})();

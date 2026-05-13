@@ -4,7 +4,7 @@
   "description": "Serhii Dolhopolov — personal academic site (React + Babel-precompiled, served via GitHub Pages)",
   "private": true,
   "scripts": {
-    "build": "babel data.jsx thumbs.jsx sections.jsx app.jsx --out-dir dist --presets @babel/preset-react"
+    "build": "node build.js"
   },
   "repository": {
     "type": "git",

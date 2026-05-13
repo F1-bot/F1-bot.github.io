@@ -1,3 +1,4 @@
+(function () {
 // -----------------------------------------------------------------------------
 // Animated thumbnails - pure SVG/CSS loops, one per publication/project.
 // Each is a 160×100 abstract "visual fingerprint" you can tie to a paper.
@@ -3251,3 +3252,4 @@ function Thumb({
   }, /*#__PURE__*/React.createElement(Cmp, null));
 }
 window.Thumb = Thumb;
+})();
