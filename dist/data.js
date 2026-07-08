@@ -516,6 +516,10 @@ const AWARDS = [{
   org: "Tallinn Mechanism · team Heart-Shaped Box",
   date: "2026"
 }, {
+  title: "Letter of Gratitude of the Ministry of Education and Science of Ukraine",
+  org: "Ministry of Education and Science of Ukraine",
+  date: "2026"
+}, {
   title: "Scholarship of the President of Ukraine for PhD students",
   org: "Office of the President of Ukraine",
   date: "2026 — 2027"
@@ -548,6 +552,10 @@ const EDUCATION = [{
 
 // News - compact with external links.
 const NEWS = [{
+  date: "Jun 25, 2026",
+  text: "Received a Letter of Gratitude from the Ministry of Education and Science of Ukraine, awarded at the Academic Council of KNUCA for professionalism, dedication, and a personal contribution to the development of education and science in Ukraine.",
+  url: "https://www.facebook.com/kafedraitknuba/posts/pfbid0w9hUE8aexqebPZxBCpuq8AHyPaQCcZ68fu1EBTwLQXmCnHQPaiP66DPfCSi4jucil"
+}, {
   date: "May 29, 2026",
   text: "Team Heart-Shaped Box won 1st place at the CTF 2026 UA-EE Cyber Shield in Kyiv, held via the Tallinn Mechanism - two days, 55 challenges across eight categories, decided on the final task.",
   url: "https://www.knuba.edu.ua/studenty-knuba-zdobuly-1-miscze-na-mizhnarodnyh-zmagannyah-z-kiberbezpeky-ctf-2026-ua-ee-cyber-shield/"
