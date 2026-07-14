@@ -656,8 +656,11 @@ html[data-theme="dark"] .q-q4 { color: #e8a8a8; border-color: #5f3535; backgroun
 .proj-item:last-child { border-bottom: 0; }
 
 .proj-thumb-wrap { position: relative; }
-.proj-thumb-wrap .thumb { width: 200px; height: 140px; }
-.proj-thumb-wrap .thumb-svg { width: 200px; height: 140px; }
+/* The box must keep the thumbs' 160:100 viewBox ratio, otherwise the SVG is
+   letterboxed inside it and the frame ThumbFrame draws no longer meets the
+   block's edges. */
+.proj-thumb-wrap .thumb { width: 200px; aspect-ratio: 160 / 100; height: auto; }
+.proj-thumb-wrap .thumb-svg { width: 100%; height: 100%; }
 .status-pill {
   position: absolute; top: 8px; left: 8px;
   font-family: var(--font-mono); font-size: 9.5px;
@@ -711,12 +714,10 @@ html[data-theme="dark"] .status-pill.approved { color: #e8b66a; border-color: #7
 .proj-sponsor > svg { flex-shrink: 0; }
 .proj-links { display: flex; flex-wrap: wrap; gap: 6px; }
 
-.proj-thumb-wrap .thumb-svg { width: 200px !important; height: 140px !important; }
 
 @media (max-width: 700px) {
   .proj-item { grid-template-columns: 1fr; gap: 14px; }
   .proj-thumb-wrap .thumb { width: 100%; aspect-ratio: 160 / 100; height: auto; max-height: 240px; }
-  .proj-thumb-wrap .thumb-svg { width: 100% !important; height: 100% !important; }
 }
 
 /* =============================================================
