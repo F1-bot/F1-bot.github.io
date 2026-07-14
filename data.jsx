@@ -33,6 +33,20 @@ const LINKS = [
 
 // Real publications. Topic keys: ml / cv / graph / nlp / security / bim
 const PUBLICATIONS = [
+  // ---- 2026 ------------------------------------------------------------
+  {
+    id: "pub-2026-01", selected: true, year: 2026,
+    title: "MACE: Modular Adaptive Code Engine with Context-Aware LoRA Expert Routing and Hierarchical Retrieval-Augmented Generation",
+    authors: ["S. Dolhopolov", "T. Honcharenko"],
+    venue: "CMIS 2026 — 9th Int. Workshop on Computer Modeling and Intelligent Systems",
+    extra: "CEUR-WS, Vol. 4220",
+    topic: "llm",
+    thumb: "mace",
+    links: {
+      pdf: "https://ceur-ws.org/Vol-4220/paper17.pdf",
+      bib: "dolhopolov2026cmis",
+    },
+  },
   // ---- 2025 ------------------------------------------------------------
   {
     id: "pub-2025-01", selected: true, year: 2025,
@@ -303,6 +317,7 @@ const TOPIC_LABEL = {
   ml:       "Machine Learning",
   cv:       "Computer Vision",
   nlp:      "NLP & Sentiment",
+  llm:      "LLMs & Code Generation",
   graph:    "Graph & Sequence Models",
   security: "Security",
   bim:      "BIM & Digital Twins",

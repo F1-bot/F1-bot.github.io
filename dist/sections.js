@@ -166,7 +166,7 @@ function Publications() {
     className: "sec",
     "data-section": true
   }, /*#__PURE__*/React.createElement(SectionHead, {
-    eyebrow: "Research \xB7 2022\u20132025",
+    eyebrow: `Research · ${years[years.length - 1]}–${years[1]}`,
     title: "Publications"
   }, /*#__PURE__*/React.createElement("a", {
     className: "quiet-link",

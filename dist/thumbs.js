@@ -2896,6 +2896,572 @@ function XaiMultimodalThumb() {
   })());
 }
 
+// mace: paper-themed (CMIS 2026) - one slow pass sweeps left to right through
+// the code engine: the coding task and three retrieval tiers (docs / project AST
+// / local file) fuse on a context bus into the router, which re-mixes its expert
+// weights while the task sits in it and fans them into four low-rank LoRA
+// bowties; the blend merges onto the frozen base model, and the generated code
+// is released only after execution, security and style checks clear in sequence.
+// The verdict loops back into generation, landing on the cycle seam.
+function MaceThumb() {
+  const t = useClock();
+
+  // ---- One calm master cycle: every motion is a phase of this single pass --
+  const CYCLE = 13;
+  const p = t % CYCLE / CYCLE;
+  const ss = (a, b, x) => {
+    const u = Math.min(1, Math.max(0, (x - a) / (b - a)));
+    return u * u * (3 - 2 * u);
+  };
+  // sin^2 bump: zero value AND zero slope at both ends
+  const bump = (a, b, x) => {
+    const u = (x - a) / (b - a);
+    if (u <= 0 || u >= 1) return 0;
+    const s = Math.sin(Math.PI * u);
+    return s * s;
+  };
+  const bez = (a, b, c, d, u) => {
+    const m = 1 - u;
+    return m * m * m * a + 3 * m * m * u * b + 3 * m * u * u * c + u * u * u * d;
+  };
+
+  // ---- Context-aware expert weights ---------------------------------------
+  // Softmax over the current task's logits (task = cycle index) with a uniform
+  // floor, so 2-3 adapters always carry the blend: weighted merging, never
+  // argmax. The mix crossfades to the next task's weights precisely while that
+  // task sits in the router - routing is conditioned, not free-running.
+  const mix = k => {
+    const l = [0, 1, 2, 3].map(i => 0.95 * Math.sin(2.4 * k + 1.75 * i) + 0.65 * Math.sin(1.07 * k + 2.9 * i + 0.9));
+    const e = l.map(v => Math.exp(v));
+    const s = e[0] + e[1] + e[2] + e[3];
+    return e.map(v => 0.07 + 0.72 * (v / s));
+  };
+  const cyc = Math.floor(t / CYCLE);
+  const wA = mix(cyc);
+  const wB = mix(cyc + 1);
+  const remix = ss(0.24, 0.38, p);
+  const w = [0, 1, 2, 3].map(i => wA[i] + (wB[i] - wA[i]) * remix);
+
+  // ---- Stage envelopes: a single wavefront, left to right ------------------
+  const taskFire = bump(0.0, 0.12, p);
+  const tierFire = bump(0.0, 0.18, p);
+  const chunkOp = ss(0.005, 0.06, p) * (1 - ss(0.17, 0.235, p));
+  const fuseOp = ss(0.165, 0.235, p) * (1 - ss(0.28, 0.36, p));
+  const routerGlow = ss(0.20, 0.28, p) * (1 - ss(0.40, 0.52, p));
+  const routeAct = ss(0.30, 0.38, p) * (1 - ss(0.48, 0.56, p));
+  const expAct = ss(0.38, 0.46, p) * (1 - ss(0.56, 0.66, p));
+  const mergeAct = ss(0.50, 0.58, p) * (1 - ss(0.66, 0.74, p));
+  const sweepEnv = ss(0.56, 0.62, p) * (1 - ss(0.72, 0.78, p));
+  const sweepY = 32 + 36 * ss(0.575, 0.74, p);
+  const lExec = bump(0.70, 0.79, p);
+  const lSec = bump(0.765, 0.855, p);
+  const lStyle = bump(0.83, 0.92, p);
+
+  // The gate stays open across the seam, then closes as the next task arrives.
+  const gateOpen = p >= 0.88 ? ss(0.90, 0.97, p) : 1 - ss(0.02, 0.12, p);
+  // The emitted source keeps its verified lines through the seam, then clears.
+  const litLine = i => p >= 0.88 ? ss(0.90 + 0.018 * i, 0.968 + 0.010 * i, p) : 1 - ss(0.06 + 0.02 * i, 0.20 + 0.02 * i, p);
+
+  // The verdict travels back into generation and lands on the seam: the dot
+  // dims only as the base model's rim lights up, so the handoff is never dark.
+  const fbU = ss(0.855, 0.995, p);
+  const fbOp = ss(0.85, 0.915, p) * (1 - ss(0.95, 0.999, p));
+  const land = Math.exp(-Math.pow(Math.min(p, 1 - p) / 0.055, 2));
+
+  // ---- Geometry -----------------------------------------------------------
+  const BUS = 30; // context bus
+  const rcx = 43,
+    rcy = 50,
+    rr = 6.5; // router diamond
+  const rR = rcx + rr,
+    rL = rcx - rr;
+  const xIn = 60,
+    xRank = 68.5,
+    xOut = 77,
+    hw = 4.5; // LoRA bowtie
+  const eY = [33.5, 44.5, 55.5, 66.5]; // four adapters
+  const bmX = 89.5,
+    bmW = 17; // frozen base model
+  const gx = 117; // verification gate column
+
+  // Three retrieval tiers; chunk size encodes granularity (coarse -> fine).
+  const tiers = [{
+    x: 26,
+    y: 42,
+    cw: 6.2,
+    ch: 4.4
+  },
+  // global documentation
+  {
+    x: 28,
+    y: 62,
+    cw: 4.6,
+    ch: 3.4
+  },
+  // project AST
+  {
+    x: 25,
+    y: 83,
+    cw: 3.2,
+    ch: 2.4
+  } // local file
+  ];
+  const legA = ss(0.02, 0.09, p); // tier -> context bus
+  const legB = ss(0.09, 0.22, p); // along the bus -> fusion point
+  const fuseX = BUS + 13 * ss(0.19, 0.33, p);
+  const taskU = ss(0.03, 0.225, p);
+  const tpx = bez(28, 35, 37, 39.75, taskU);
+  const tpy = bez(21, 22, 34, 46.75, taskU);
+  const tpOp = ss(0.02, 0.06, p) * (1 - ss(0.20, 0.26, p));
+  const routeU = ss(0.335, 0.455, p);
+  const routeEnv = ss(0.32, 0.38, p) * (1 - ss(0.43, 0.485, p));
+  const fbx = bez(117, 117, 104, 98, fbU);
+  const fby = bez(72, 88, 88, 76.2, fbU);
+  const astEdges = [[26, 62, 18, 57], [26, 62, 18, 67], [18, 57, 10, 54], [18, 57, 10, 60], [18, 67, 10, 70]];
+  const locLines = [[8, 75, 15], [12, 79, 10], [12, 83, 13], [8, 87, 9]];
+  const lint = [[62.3, 9], [66.2, 6.4], [70.1, 8]];
+  const codeLines = [[132, 42.5, 14], [135, 48.5, 11], [138, 54.5, 8], [132, 60.5, 12]];
+  const shield = "M117,44.4 L121.6,46.2 L121.6,50.4 C121.6,53.6 119.7,55.3 117,56.2" + " C114.3,55.3 112.4,53.6 112.4,50.4 L112.4,46.2 Z";
+  const play = "113.3,28.6 113.3,37.4 121,33";
+  const diamond = `${rcx},${rcy - rr} ${rR},${rcy} ${rcx},${rcy + rr} ${rL},${rcy}`;
+  return /*#__PURE__*/React.createElement(ThumbFrame, null, /*#__PURE__*/React.createElement("path", {
+    d: "M117,72 C117,88 104,88 98,76.2",
+    fill: "none",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.45",
+    strokeDasharray: "2.5 2"
+  }), /*#__PURE__*/React.createElement("polygon", {
+    points: "98,70.6 95.6,76 100.4,76",
+    fill: "var(--accent)",
+    opacity: 0.16 + 0.6 * land
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: fbx,
+    cy: fby,
+    r: "1.7",
+    fill: "var(--accent)",
+    opacity: 0.9 * fbOp
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "7",
+    y: "12",
+    width: "21",
+    height: "18",
+    rx: "2.5",
+    fill: "none",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.5"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "10.6",
+    y: "17.4",
+    width: "3.4",
+    height: "3.4",
+    rx: "0.8",
+    fill: "var(--ink)",
+    opacity: "0.45"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "10.6",
+    y: "17.4",
+    width: "3.4",
+    height: "3.4",
+    rx: "0.8",
+    fill: "var(--accent)",
+    opacity: 0.95 * taskFire
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "10.6",
+    y: "22.6",
+    width: "3.4",
+    height: "2.2",
+    rx: "0.8",
+    fill: "var(--ink)",
+    opacity: "0.22"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "16.6",
+    y: "18",
+    width: "8.8",
+    height: "2.2",
+    rx: "0.8",
+    fill: "var(--ink)",
+    opacity: "0.34"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "16.6",
+    y: "22.6",
+    width: "5.8",
+    height: "2.2",
+    rx: "0.8",
+    fill: "var(--ink)",
+    opacity: "0.34"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M28,21 C35,22 37,34 39.75,46.75",
+    fill: "none",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.45"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: tpx,
+    cy: tpy,
+    r: "1.7",
+    fill: "var(--accent)",
+    opacity: 0.9 * tpOp
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: BUS,
+    y1: "42",
+    x2: BUS,
+    y2: "83",
+    stroke: "var(--hairline)",
+    strokeWidth: "0.8"
+  }), tiers.map((tr, i) => /*#__PURE__*/React.createElement("line", {
+    key: `stub-${i}`,
+    x1: tr.x,
+    y1: tr.y,
+    x2: BUS,
+    y2: tr.y,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.45"
+  })), /*#__PURE__*/React.createElement("line", {
+    x1: BUS,
+    y1: rcy,
+    x2: rL,
+    y2: rcy,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.7",
+    strokeOpacity: "0.5"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "11",
+    y: "35",
+    width: "10",
+    height: "12",
+    rx: "1",
+    fill: "none",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.4"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M16,38 L23,38 L26,41 L26,50 L16,50 Z",
+    fill: "var(--ink)",
+    fillOpacity: 0.05 + 0.16 * tierFire,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.6"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M23,38 L26,41 L23,41 Z",
+    fill: "none",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.6"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "18",
+    y: "42.4",
+    width: "6",
+    height: "1.4",
+    rx: "0.5",
+    fill: "var(--ink)",
+    opacity: "0.35"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "18",
+    y: "45.6",
+    width: "4",
+    height: "1.4",
+    rx: "0.5",
+    fill: "var(--ink)",
+    opacity: "0.35"
+  }), astEdges.map((e, i) => /*#__PURE__*/React.createElement("line", {
+    key: `ast-${i}`,
+    x1: e[0],
+    y1: e[1],
+    x2: e[2],
+    y2: e[3],
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.55"
+  })), [[10, 54], [10, 60], [10, 70]].map((n, i) => /*#__PURE__*/React.createElement("circle", {
+    key: `leaf-${i}`,
+    cx: n[0],
+    cy: n[1],
+    r: "1.1",
+    fill: "var(--ink)",
+    opacity: "0.4"
+  })), [[18, 57], [18, 67]].map((n, i) => /*#__PURE__*/React.createElement("circle", {
+    key: `br-${i}`,
+    cx: n[0],
+    cy: n[1],
+    r: "1.5",
+    fill: "var(--ink)",
+    opacity: "0.5"
+  })), /*#__PURE__*/React.createElement("circle", {
+    cx: "26",
+    cy: "62",
+    r: "1.9",
+    fill: "var(--ink)",
+    opacity: "0.6"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "26",
+    cy: "62",
+    r: "1.9",
+    fill: "var(--accent)",
+    opacity: 0.85 * tierFire
+  }), locLines.map((b, i) => /*#__PURE__*/React.createElement("rect", {
+    key: `loc-${i}`,
+    x: b[0],
+    y: b[1] - 1.3,
+    width: b[2],
+    height: "2.6",
+    rx: "0.9",
+    fill: "var(--ink)",
+    opacity: 0.3 + 0.35 * tierFire
+  })), tiers.map((tr, i) => {
+    const cx = tr.x + (BUS - tr.x) * legA;
+    const cy = tr.y + (rcy - tr.y) * legB;
+    return /*#__PURE__*/React.createElement("rect", {
+      key: `chunk-${i}`,
+      x: cx - tr.cw / 2,
+      y: cy - tr.ch / 2,
+      width: tr.cw,
+      height: tr.ch,
+      rx: "0.8",
+      fill: "var(--accent)",
+      opacity: 0.85 * chunkOp
+    });
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: fuseX,
+    cy: rcy,
+    r: "2.4",
+    fill: "var(--accent)",
+    opacity: 0.9 * fuseOp
+  }), eY.map((y, i) => /*#__PURE__*/React.createElement("line", {
+    key: `route-${i}`,
+    x1: rR,
+    y1: rcy,
+    x2: xIn,
+    y2: y,
+    stroke: "var(--accent)",
+    strokeWidth: 0.35 + 3.6 * w[i],
+    strokeOpacity: (0.10 + 0.85 * w[i]) * (0.5 + 0.5 * routeAct)
+  })), /*#__PURE__*/React.createElement("polygon", {
+    points: diamond,
+    fill: "var(--ink)",
+    opacity: "0.05"
+  }), /*#__PURE__*/React.createElement("polygon", {
+    points: diamond,
+    fill: "none",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.8",
+    strokeOpacity: "0.6"
+  }), /*#__PURE__*/React.createElement("polygon", {
+    points: diamond,
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "1",
+    strokeOpacity: 0.85 * routerGlow
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: rcx,
+    cy: rcy,
+    r: "1.7",
+    fill: "var(--ink)",
+    opacity: "0.35"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: rcx,
+    cy: rcy,
+    r: "1.7",
+    fill: "var(--accent)",
+    opacity: 0.95 * routerGlow
+  }), eY.map((y, i) => /*#__PURE__*/React.createElement("circle", {
+    key: `pk-${i}`,
+    cx: rR + (xIn - rR) * routeU,
+    cy: rcy + (y - rcy) * routeU,
+    r: 1.05 + 1.9 * w[i],
+    fill: "var(--accent)",
+    opacity: (0.25 + 0.8 * w[i]) * routeEnv
+  })), eY.map((y, i) => {
+    const f = (0.10 + 1.15 * w[i]) * (0.5 + 0.5 * expAct);
+    return /*#__PURE__*/React.createElement("g", {
+      key: `lora-${i}`
+    }, /*#__PURE__*/React.createElement("line", {
+      x1: xIn,
+      y1: y - hw,
+      x2: xIn,
+      y2: y + hw,
+      stroke: "var(--ink)",
+      strokeWidth: "1.1",
+      strokeOpacity: "0.4"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: xOut,
+      y1: y - hw,
+      x2: xOut,
+      y2: y + hw,
+      stroke: "var(--ink)",
+      strokeWidth: "1.1",
+      strokeOpacity: "0.4"
+    }), /*#__PURE__*/React.createElement("polygon", {
+      points: `${xIn},${y - hw} ${xIn},${y + hw} ${xRank},${y}`,
+      fill: "var(--accent)",
+      fillOpacity: f,
+      stroke: "var(--muted-2)",
+      strokeWidth: "0.4",
+      strokeOpacity: "0.4"
+    }), /*#__PURE__*/React.createElement("polygon", {
+      points: `${xOut},${y - hw} ${xOut},${y + hw} ${xRank},${y}`,
+      fill: "var(--accent)",
+      fillOpacity: f,
+      stroke: "var(--muted-2)",
+      strokeWidth: "0.4",
+      strokeOpacity: "0.4"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: xRank,
+      cy: y,
+      r: 0.7 + 3.4 * w[i],
+      fill: "var(--accent)",
+      opacity: 0.45 + 0.5 * expAct
+    }));
+  }), eY.map((y, i) => /*#__PURE__*/React.createElement("line", {
+    key: `mrg-${i}`,
+    x1: xOut,
+    y1: y,
+    x2: bmX,
+    y2: rcy,
+    stroke: "var(--accent)",
+    strokeWidth: 0.35 + 3.6 * w[i],
+    strokeOpacity: (0.10 + 0.85 * w[i]) * (0.5 + 0.5 * mergeAct)
+  })), /*#__PURE__*/React.createElement("circle", {
+    cx: bmX,
+    cy: rcy,
+    r: "2",
+    fill: "var(--accent)",
+    opacity: 0.4 + 0.55 * mergeAct
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: bmX,
+    y: "30",
+    width: bmW,
+    height: "40",
+    rx: "3",
+    fill: "var(--ink)",
+    fillOpacity: "0.05",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.55"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: bmX,
+    y: "30",
+    width: bmW,
+    height: "40",
+    rx: "3",
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "0.9",
+    strokeOpacity: 0.7 * land
+  }), [34, 41, 48, 55, 62].map((y, i) => /*#__PURE__*/React.createElement("rect", {
+    key: `bl-${i}`,
+    x: "92",
+    y: y,
+    width: "12",
+    height: "4",
+    rx: "1",
+    fill: "var(--ink)",
+    opacity: "0.14"
+  })), /*#__PURE__*/React.createElement("line", {
+    x1: "91",
+    y1: sweepY,
+    x2: "105",
+    y2: sweepY,
+    stroke: "var(--accent)",
+    strokeWidth: "1.6",
+    strokeOpacity: 0.8 * sweepEnv
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "106.5",
+    y1: rcy,
+    x2: "112.4",
+    y2: rcy,
+    stroke: "var(--accent)",
+    strokeWidth: "1.2",
+    strokeOpacity: 0.2 + 0.6 * sweepEnv
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: gx,
+    y1: "28.6",
+    x2: gx,
+    y2: "71.6",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.5"
+  }), /*#__PURE__*/React.createElement("polygon", {
+    points: play,
+    fill: "var(--ink)",
+    opacity: "0.32"
+  }), /*#__PURE__*/React.createElement("polygon", {
+    points: play,
+    fill: "var(--accent)",
+    opacity: 0.95 * lExec
+  }), /*#__PURE__*/React.createElement("path", {
+    d: shield,
+    fill: "var(--ink)",
+    fillOpacity: "0.32",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.5"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: shield,
+    fill: "var(--accent)",
+    fillOpacity: 0.95 * lSec
+  }), lint.map((l, i) => /*#__PURE__*/React.createElement("g", {
+    key: `lint-${i}`
+  }, /*#__PURE__*/React.createElement("rect", {
+    x: "112.4",
+    y: l[0] - 0.75,
+    width: l[1],
+    height: "1.5",
+    rx: "0.5",
+    fill: "var(--ink)",
+    opacity: "0.36"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "112.4",
+    y: l[0] - 0.75,
+    width: l[1],
+    height: "1.5",
+    rx: "0.5",
+    fill: "var(--accent)",
+    opacity: 0.95 * lStyle
+  }))), /*#__PURE__*/React.createElement("line", {
+    x1: "121.6",
+    y1: rcy,
+    x2: "128",
+    y2: rcy,
+    stroke: "var(--accent)",
+    strokeWidth: "1.4",
+    strokeOpacity: 0.12 + 0.7 * gateOpen
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M128,32 L146,32 L152,38 L152,68 L128,68 Z",
+    fill: "var(--ink)",
+    fillOpacity: "0.05",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.6"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M146,32 L152,38 L146,38 Z",
+    fill: "none",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.6"
+  }), codeLines.map((l, i) => /*#__PURE__*/React.createElement("g", {
+    key: `code-${i}`
+  }, /*#__PURE__*/React.createElement("rect", {
+    x: l[0],
+    y: l[1] - 1.3,
+    width: l[2],
+    height: "2.6",
+    rx: "0.9",
+    fill: "var(--ink)",
+    opacity: "0.3"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: l[0],
+    y: l[1] - 1.3,
+    width: l[2],
+    height: "2.6",
+    rx: "0.9",
+    fill: "var(--accent)",
+    opacity: 0.9 * litLine(i)
+  }))));
+}
+
 // project-specific variants (larger, more elaborate)
 function ProjectFieldThumb() {
   return /*#__PURE__*/React.createElement(FieldThumb, null);
@@ -3215,6 +3781,7 @@ const THUMB_COMPONENTS = {
   progress: ProgressThumb,
   "hydro-ensemble": HydroEnsembleThumb,
   "xai-multimodal": XaiMultimodalThumb,
+  mace: MaceThumb,
   "sensor-graph": SensorGraphThumb,
   "pred-vs-obs": PredVsObsThumb,
   "neuro-phys": NeuroPhysThumb,

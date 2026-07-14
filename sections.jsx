@@ -144,7 +144,7 @@ function Publications() {
 
   return (
     <section id="publications" className="sec" data-section>
-      <SectionHead eyebrow="Research · 2022–2025" title="Publications">
+      <SectionHead eyebrow={`Research · ${years[years.length - 1]}–${years[1]}`} title="Publications">
         <a className="quiet-link" href={LINKS.find(l => l.label === "Google Scholar").url}>
           Full list on Google Scholar ↗
         </a>
