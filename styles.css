@@ -350,7 +350,9 @@ a { color: inherit; text-decoration: none; }
 .btn-link.primary .arr { color: rgba(255,255,255,.7); }
 html[data-theme="dark"] .btn-link.primary { background: var(--ink); color: #0e0f11; border-color: var(--ink); }
 html[data-theme="dark"] .btn-link.primary .arr { color: rgba(14,15,17,.6); }
-html[data-theme="dark"] .btn-link.primary:hover { color: #fff; }
+html[data-theme="dark"] .btn-link.primary:hover {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
 html[data-theme="dark"] .btn-link.primary:hover .arr { color: rgba(255,255,255,.7); }
 
 /* Hero email line */
@@ -713,7 +715,6 @@ html[data-theme="dark"] .status-pill.approved { color: #e8b66a; border-color: #7
 }
 .proj-sponsor > svg { flex-shrink: 0; }
 .proj-links { display: flex; flex-wrap: wrap; gap: 6px; }
-
 
 @media (max-width: 700px) {
   .proj-item { grid-template-columns: 1fr; gap: 14px; }
