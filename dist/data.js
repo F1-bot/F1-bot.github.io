@@ -569,6 +569,10 @@ const EDUCATION = [{
 
 // News - compact with external links.
 const NEWS = [{
+  date: "Jul 4, 2026",
+  text: "Published «MACE: Modular Adaptive Code Engine» in the CMIS 2026 proceedings (CEUR-WS, Vol. 4220). Context-aware LoRA expert routing, hierarchical retrieval-augmented generation, and a multi-signal verification loop raise code-generation correctness from 84% to 96% while cutting generation time by 35%.",
+  url: "https://ceur-ws.org/Vol-4220/paper17.pdf"
+}, {
   date: "Jun 25, 2026",
   text: "Received a Letter of Gratitude from the Ministry of Education and Science of Ukraine, awarded at the Academic Council of KNUCA for professionalism, dedication, and a personal contribution to the development of education and science in Ukraine.",
   url: "https://www.facebook.com/kafedraitknuba/posts/pfbid0w9hUE8aexqebPZxBCpuq8AHyPaQCcZ68fu1EBTwLQXmCnHQPaiP66DPfCSi4jucil"
