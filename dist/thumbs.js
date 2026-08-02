@@ -3462,181 +3462,458 @@ function MaceThumb() {
   }))));
 }
 
-// twin-verify: paper-themed (IEEE SIST 2026) - an agentic architecture that
-// dynamically verifies an infrastructure digital twin. The twin is a Warren
-// truss (a bridge / infrastructure object) drawn as an accent wireframe. Two
-// autonomous agents patrol above it on a smooth antiphase sweep; each casts a
-// downward verification beam. Members and joints the agents are currently over
-// brighten to "verified"; away from them the twin rests at a calm baseline.
-// One diagonal carries structural damage - a gap in the member with a muted
-// alert ring - which closes and clears to an accent confirmation ring the
-// moment an agent verifies that span (dynamic verification -> recovery).
-// Motion is a single pair of sinusoids: continuous, seamless, no reset flash.
-// Centered on the truss (y=49); connected span left to right.
+// twin-verify: paper-themed (IEEE SIST 2026, Dolhopolov & Honcharenko et al.) -
+// "Agentic AI-Driven Architecture for Dynamic Verification of Infrastructure
+// Digital Twins." The agentic cognitive core drawn as a CLOSED verification
+// loop that bridges the physical<->digital Reality Gap. LEFT (physical): a
+// damaged reinforced-concrete frame whose load-bearing element carries a
+// persistent crack, sensed by two embodied agents - a hovering UAV drone and a
+// ground robot - that cast a LiDAR fan onto prioritised elements; the resulting
+// percept flows into the core. CENTRE (cognitive core): three differentiated
+// agents form a triangle - OBSERVER (percept intake, an outward sensing arc),
+// ANALYST (diagnosis, an inner lens), VERIFIER (the twin's custodian, a
+// diamond). A single hypothesis token circulates O->A->V->O forever, easing
+// into each agent (a handoff pause) then out again; its confidence ring grows
+// along the pipeline and peaks at the Verifier, trailing reasoning-traces along
+// flowing channels. RIGHT (digital twin + application): on confirm passes the
+// Verifier writes a beam into a single BIM/IFC element card that flips
+// healthy->damaged (accent fill, property-set rows light, a spalling
+// corner-notch, a write pulse); a damage-ontology triad above brightens one
+// node, and an application dashboard below fills its decision bar - the
+// human-in-the-loop readout. Alternate passes recirculate the token without
+// writing (the Verifier filtering inconsistencies). Two faint dividers mark
+// physical | cognitive | digital. Every quantity is a deterministic, seamlessly
+// looping function of t; no text, glyphs, numbers or randomness.
+const tvSS = (a, b, x) => {
+  const u = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return u * u * (3 - 2 * u);
+};
+const tvBump = (a, b, x) => {
+  const u = (x - a) / (b - a);
+  if (u <= 0 || u >= 1) return 0;
+  const s = Math.sin(Math.PI * u);
+  return s * s;
+};
+const tvGauss = (d, w) => Math.exp(-(d * d) / (w * w));
 function TwinVerifyThumb() {
   const t = useClock();
 
-  // ---- Infrastructure digital twin: a Warren truss -------------------------
-  const x0 = 14,
-    x1 = 146; // span endpoints
-  const topY = 39,
-    botY = 59; // chords
-  const panels = 6;
-  const step = (x1 - x0) / panels; // 22
-  const bot = Array.from({
-    length: panels + 1
-  }, (_, i) => ({
-    x: x0 + i * step,
-    y: botY
-  }));
-  const top = Array.from({
-    length: panels
-  }, (_, i) => ({
-    x: x0 + (i + 0.5) * step,
-    y: topY
-  }));
-  const members = [];
-  for (let i = 0; i < panels; i++) members.push([bot[i].x, bot[i].y, bot[i + 1].x, bot[i + 1].y]); // bottom chord
-  for (let i = 0; i < panels - 1; i++) members.push([top[i].x, top[i].y, top[i + 1].x, top[i + 1].y]); // top chord
-  for (let i = 0; i < panels; i++) {
-    // web diagonals
-    members.push([bot[i].x, bot[i].y, top[i].x, top[i].y]);
-    members.push([top[i].x, top[i].y, bot[i + 1].x, bot[i + 1].y]);
-  }
-  const nodes = [...bot, ...top];
+  // ---- the three agents of the cognitive core (a triangle) ----------------
+  const O = [58, 64]; // Observer - percept intake (left vertex)
+  const A = [82, 26]; // Analyst  - diagnostic reasoning (apex)
+  const V = [106, 64]; // Verifier - twin custodian / write (right vertex)
 
-  // ---- Two autonomous agents: smooth antiphase patrol above the twin -------
-  const mid = (x0 + x1) / 2; // 80
-  const amp = 54;
-  const wsp = 0.5; // ~12.6 s period
-  const agentY = 31;
-  const ax0 = mid + amp * Math.sin(wsp * t);
-  const ax1 = mid + amp * Math.sin(wsp * t + Math.PI);
+  // perimeter walk O -> A -> V -> O, weighted by edge length (even speed)
+  const lenOA = Math.hypot(A[0] - O[0], A[1] - O[1]);
+  const lenAV = Math.hypot(V[0] - A[0], V[1] - A[1]);
+  const lenVO = Math.hypot(O[0] - V[0], O[1] - V[1]);
+  const total = lenOA + lenAV + lenVO;
+  const f0 = lenOA / total; // phase of A
+  const f1 = (lenOA + lenAV) / total; // phase of V
+  // each edge is eased with smoothstep so the token's velocity returns to zero
+  // at every vertex (from both sides) - the slope is continuous at the loop
+  // seam (vertex O) and at A, V, giving a calm "ease-in / handoff / ease-out".
+  const tvPerim = ph => {
+    if (ph < f0) {
+      const e = tvSS(0, f0, ph);
+      return [O[0] + (A[0] - O[0]) * e, O[1] + (A[1] - O[1]) * e];
+    } else if (ph < f1) {
+      const e = tvSS(f0, f1, ph);
+      return [A[0] + (V[0] - A[0]) * e, A[1] + (V[1] - A[1]) * e];
+    }
+    const e = tvSS(f1, 1, ph);
+    return [V[0] + (O[0] - V[0]) * e, V[1] + (O[1] - V[1]) * e];
+  };
 
-  // verification "coverage" of a point x = how close an agent is right now
-  const sigma = 12;
-  const gauss = d => Math.exp(-(d * d) / (2 * sigma * sigma));
-  const cover = x => Math.min(1, gauss(x - ax0) + gauss(x - ax1));
+  // ---- master circulation -------------------------------------------------
+  const P = 6.4;
+  const wp = t / P % 1; // token phase around the triangle
+  const circIndex = Math.floor(t / P);
+  const confirm = circIndex % 2 === 0; // confirm+write vs. filter/recirculate
 
-  // ---- Structural damage on one central diagonal (top[2] -> bot[3]) --------
-  const dA = top[2],
-    dB = bot[3];
-  const dmx = (dA.x + dB.x) / 2,
-    dmy = (dA.y + dB.y) / 2; // 74.5, 49
-  const dInt = cover(dmx);
-  const gap = 3.6 * (1 - dInt); // closes when verified
+  const [tx, ty] = tvPerim(wp);
 
-  const beam = (ax, ph) => /*#__PURE__*/React.createElement("g", null, /*#__PURE__*/React.createElement("line", {
-    x1: ax,
-    y1: agentY + 3.4,
-    x2: ax,
-    y2: botY,
-    stroke: "var(--accent)",
-    strokeWidth: "0.6",
-    strokeOpacity: "0.22",
-    strokeDasharray: "1.5 2.2",
-    strokeDashoffset: -(t * 6)
-  }), /*#__PURE__*/React.createElement("circle", {
-    cx: ax,
-    cy: agentY,
-    r: 4.2 + 0.5 * Math.sin(t * 2 + ph),
-    fill: "none",
-    stroke: "var(--accent)",
-    strokeWidth: "0.5",
-    strokeOpacity: "0.4"
-  }), /*#__PURE__*/React.createElement("path", {
-    d: `M${ax},${agentY - 2.5} L${ax + 2.5},${agentY} L${ax},${agentY + 2.5} L${ax - 2.5},${agentY} Z`,
-    fill: "var(--accent)",
-    opacity: "0.92"
-  }));
+  // confidence ring grows O..A..V (accumulating), collapses just past V
+  const conf = wp <= f1 ? wp / f1 : Math.max(0, 1 - tvSS(f1, f1 + 0.09, wp));
+  const ringR = 2.2 + conf * 4.6;
+  const ringOp = 0.25 + 0.55 * conf;
+
+  // handoff glow when the token sits on a vertex (periodic, seam-safe)
+  const dphase = (ph, c) => {
+    const d = Math.abs(ph - c);
+    return Math.min(d, 1 - d);
+  };
+  const glowO = tvGauss(dphase(wp, 0), 0.05);
+  const glowA = tvGauss(dphase(wp, f0), 0.05);
+  const glowV = tvGauss(dphase(wp, f1), 0.05);
+
+  // ---- write action into the digital-twin element (confirm passes only) ---
+  const elX = 122,
+    elY = 38,
+    elW = 24,
+    elH = 18;
+  const elCx = elX + elW / 2,
+    elCy = elY + elH / 2; // 134, 47
+  const wTgt = [elX, elCy]; // beam target: near edge
+  const writeEnv = confirm ? tvBump(f1 + 0.005, f1 + 0.16, wp) : 0;
+  const beamU = confirm ? tvSS(f1, f1 + 0.12, wp) : 0;
+  const beamOp = confirm ? tvBump(f1, f1 + 0.18, wp) : 0;
+  const bx = V[0] + (wTgt[0] - V[0]) * beamU;
+  const by = V[1] + (wTgt[1] - V[1]) * beamU;
+  // element toggles to damaged after the write, holds, releases before loop end
+  const dmg = confirm ? tvSS(f1 + 0.06, f1 + 0.16, wp) * (1 - tvSS(0.90, 0.99, wp)) : 0;
+
+  // ---- physical intake: LiDAR onto a damaged RC frame ---------------------
+  const col = [14, 30];
+  const flo = [34, 56, 78];
+  const scanTargets = [[30, 45], [30, 67], [14, 56], [22, 78]];
+  const targetIdx = circIndex % scanTargets.length;
+  const tgt = scanTargets[targetIdx];
+  const rayPulse = tvBump(0.05, 0.55, wp); // active-ray brightening
+  const perceptU = tvSS(0.70, 0.97, wp); // percept -> Observer
+  const perceptOp = 0.9 * tvBump(0.68, 1.0, wp); // invisible at the seam
+  const px = tgt[0] + (O[0] - tgt[0]) * perceptU;
+  const py = tgt[1] + (O[1] - tgt[1]) * perceptU;
+  const dmgPhys = 0.42 + 0.24 * Math.sin(t * 1.3); // steady physical crack cue
+
+  // embodied sensing agents (continuous, no modulo): UAV drone + ground robot
+  const droneX = 22,
+    droneY = 21 + 1.5 * Math.sin(t * 1.05);
+  const dogX = 36 + 0.8 * Math.sin(t * 1.4),
+    dogY = 80;
+  const shimmer = 0.5 + 0.5 * Math.sin(t * 0.9);
+
+  // continuous reasoning-trace flow along the three channels
+  const flow = -(t * 5);
+  const edges = [[O, A], [A, V], [V, O]];
+  const trail = [0.035, 0.075];
+
+  // damage-ontology knowledge-graph triad beside the twin
+  const onto = [[126, 20], [143, 16], [146, 29]];
   return /*#__PURE__*/React.createElement(ThumbFrame, null, /*#__PURE__*/React.createElement("line", {
-    x1: 6,
-    y1: 73,
-    x2: 154,
-    y2: 73,
+    x1: 44,
+    y1: 14,
+    x2: 44,
+    y2: 86,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeDasharray: "1 3",
+    strokeOpacity: "0.28"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: 118,
+    y1: 14,
+    x2: 118,
+    y2: 86,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeDasharray: "1 3",
+    strokeOpacity: "0.28"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: 8,
+    y1: 82,
+    x2: 40,
+    y2: 82,
     stroke: "var(--hairline)",
     strokeWidth: "0.6"
-  }), [x0, x1].map((px, i) => /*#__PURE__*/React.createElement("g", {
-    key: `pier-${i}`
-  }, /*#__PURE__*/React.createElement("line", {
-    x1: px,
-    y1: botY,
-    x2: px,
-    y2: 73,
+  }), col.map((cx, i) => /*#__PURE__*/React.createElement("line", {
+    key: `col-${i}`,
+    x1: cx,
+    y1: flo[0],
+    x2: cx,
+    y2: flo[2],
     stroke: "var(--ink)",
-    strokeWidth: "1",
-    strokeOpacity: "0.45"
-  }), /*#__PURE__*/React.createElement("line", {
-    x1: px - 4,
-    y1: 73,
-    x2: px + 4,
-    y2: 73,
+    strokeWidth: "1.1",
+    strokeOpacity: "0.55"
+  })), flo.map((by2, i) => /*#__PURE__*/React.createElement("line", {
+    key: `beam-${i}`,
+    x1: col[0],
+    y1: by2,
+    x2: col[1],
+    y2: by2,
     stroke: "var(--ink)",
-    strokeWidth: "1",
-    strokeOpacity: "0.45"
-  }))), members.map((m, i) => {
-    const c = cover((m[0] + m[2]) / 2);
-    return /*#__PURE__*/React.createElement("line", {
-      key: `m-${i}`,
-      x1: m[0],
-      y1: m[1],
-      x2: m[2],
-      y2: m[3],
-      stroke: "var(--accent)",
-      strokeWidth: 0.7 + 0.45 * c,
-      strokeOpacity: 0.36 + 0.58 * c
-    });
-  }), gap > 0.35 && /*#__PURE__*/React.createElement("circle", {
-    cx: dmx,
-    cy: dmy,
-    r: gap,
-    fill: "var(--thumb-bg)"
-  }), /*#__PURE__*/React.createElement("circle", {
-    cx: dmx,
-    cy: dmy,
-    r: "3.4",
+    strokeWidth: "1.1",
+    strokeOpacity: "0.55"
+  })), /*#__PURE__*/React.createElement("polyline", {
+    points: "30,48 27.4,52 29,55 26.6,59",
     fill: "none",
-    stroke: "var(--muted-2)",
-    strokeWidth: "0.7",
-    strokeDasharray: "1.4 1.4",
-    strokeOpacity: 0.75 * (1 - dInt)
+    stroke: "var(--accent)",
+    strokeWidth: "1",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeOpacity: dmgPhys
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: droneX - 4.5,
+    y1: droneY,
+    x2: droneX + 4.5,
+    y2: droneY,
+    stroke: "var(--ink)",
+    strokeWidth: "1",
+    strokeOpacity: "0.6"
   }), /*#__PURE__*/React.createElement("circle", {
-    cx: dmx,
-    cy: dmy,
-    r: 2.6 + 1.4 * dInt,
+    cx: droneX - 4.5,
+    cy: droneY,
+    r: "1.3",
+    fill: "none",
+    stroke: "var(--ink)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.6"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: droneX + 4.5,
+    cy: droneY,
+    r: "1.3",
+    fill: "none",
+    stroke: "var(--ink)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.6"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: droneX,
+    cy: droneY,
+    r: "1.1",
+    fill: "var(--accent)",
+    opacity: "0.85"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: dogX,
+    cy: dogY,
+    r: "2",
+    fill: "none",
+    stroke: "var(--ink)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.55"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: dogX,
+    cy: dogY,
+    r: "0.9",
+    fill: "var(--ink)",
+    opacity: "0.6"
+  }), scanTargets.map((s, i) => {
+    const active = i === targetIdx;
+    const base = 0.08 + 0.05 * shimmer;
+    const op = active ? base + 0.5 * rayPulse : base;
+    const sw = active ? 0.4 + 0.3 * rayPulse : 0.4;
+    return /*#__PURE__*/React.createElement("line", {
+      key: `ray-${i}`,
+      x1: droneX,
+      y1: droneY + 2,
+      x2: s[0],
+      y2: s[1],
+      stroke: "var(--accent)",
+      strokeWidth: sw,
+      strokeOpacity: op
+    });
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: dogX,
+    y1: dogY - 2,
+    x2: tgt[0],
+    y2: tgt[1],
+    stroke: "var(--accent)",
+    strokeWidth: "0.5",
+    strokeOpacity: 0.52 * rayPulse
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: px,
+    cy: py,
+    r: "1.5",
+    fill: "var(--accent)",
+    opacity: perceptOp
+  }), edges.map(([p, q], i) => /*#__PURE__*/React.createElement("line", {
+    key: `e-${i}`,
+    x1: p[0],
+    y1: p[1],
+    x2: q[0],
+    y2: q[1],
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.8",
+    strokeOpacity: "0.4"
+  })), edges.map(([p, q], i) => /*#__PURE__*/React.createElement("line", {
+    key: `ef-${i}`,
+    x1: p[0],
+    y1: p[1],
+    x2: q[0],
+    y2: q[1],
+    stroke: "var(--accent)",
+    strokeWidth: "0.7",
+    strokeOpacity: "0.32",
+    strokeDasharray: "1.6 5.4",
+    strokeDashoffset: flow
+  })), /*#__PURE__*/React.createElement("line", {
+    x1: V[0],
+    y1: V[1],
+    x2: wTgt[0],
+    y2: wTgt[1],
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeDasharray: "1.5 2",
+    strokeOpacity: 0.2 + 0.4 * writeEnv
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: O[0],
+    cy: O[1],
+    r: 4 + 5 * glowO,
+    fill: "var(--accent)",
+    opacity: 0.4 * glowO
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: A[0],
+    cy: A[1],
+    r: 4 + 5 * glowA,
+    fill: "var(--accent)",
+    opacity: 0.4 * glowA
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: V[0],
+    cy: V[1],
+    r: 4 + 5 * glowV,
+    fill: "var(--accent)",
+    opacity: 0.4 * glowV
+  }), /*#__PURE__*/React.createElement("path", {
+    d: `M${O[0] - 5},${O[1] - 3.6} A6 6 0 0 0 ${O[0] - 5},${O[1] + 3.6}`,
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "0.7",
+    strokeOpacity: "0.5"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: O[0],
+    cy: O[1],
+    r: "3.2",
+    fill: "var(--ink)",
+    opacity: "0.8"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: A[0],
+    cy: A[1],
+    r: "3.4",
+    fill: "var(--ink)",
+    opacity: "0.8"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: A[0],
+    cy: A[1],
+    r: "1.5",
+    fill: "none",
+    stroke: "var(--thumb-bg)",
+    strokeWidth: "0.7"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: `M${V[0]},${V[1] - 3.6} L${V[0] + 3.6},${V[1]} L${V[0]},${V[1] + 3.6} L${V[0] - 3.6},${V[1]} Z`,
+    fill: "var(--ink)",
+    opacity: "0.8"
+  }), trail.map((d, i) => {
+    const ph = (wp - d + 1) % 1;
+    const [x, y] = tvPerim(ph);
+    return /*#__PURE__*/React.createElement("circle", {
+      key: `tr-${i}`,
+      cx: x,
+      cy: y,
+      r: 1.3 - 0.3 * i,
+      fill: "var(--accent)",
+      opacity: 0.3 - 0.12 * i
+    });
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: tx,
+    cy: ty,
+    r: ringR,
     fill: "none",
     stroke: "var(--accent)",
     strokeWidth: "0.8",
-    strokeOpacity: 0.85 * dInt
-  }), nodes.map((n, i) => {
-    const c = cover(n.x);
-    return /*#__PURE__*/React.createElement("g", {
-      key: `n-${i}`
-    }, c > 0.25 && /*#__PURE__*/React.createElement("circle", {
-      cx: n.x,
-      cy: n.y,
-      r: 1.8 + 1.2 * c,
-      fill: "none",
-      stroke: "var(--accent)",
-      strokeWidth: "0.5",
-      strokeOpacity: 0.5 * c
-    }), /*#__PURE__*/React.createElement("circle", {
-      cx: n.x,
-      cy: n.y,
-      r: 0.9 + 0.5 * c,
-      fill: "var(--accent)",
-      opacity: 0.5 + 0.45 * c
-    }));
-  }), [bot[1], bot[3], bot[5]].map((s, i) => /*#__PURE__*/React.createElement("line", {
-    key: `s-${i}`,
-    x1: s.x,
-    y1: botY + 0.5,
-    x2: s.x,
-    y2: botY + 3,
-    stroke: "var(--muted-2)",
+    opacity: ringOp
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: tx,
+    cy: ty,
+    r: "2",
+    fill: "var(--accent)"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: bx,
+    cy: by,
+    r: ringR * 0.7,
+    fill: "none",
+    stroke: "var(--accent)",
     strokeWidth: "0.8",
-    strokeOpacity: 0.35 + 0.28 * (0.5 + 0.5 * Math.sin(t * 1.6 + i * 1.7))
-  })), beam(ax0, 0), beam(ax1, Math.PI));
+    opacity: 0.7 * beamOp
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: bx,
+    cy: by,
+    r: "1.8",
+    fill: "var(--accent)",
+    opacity: beamOp
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: elX,
+    y: elY,
+    width: elW,
+    height: elH,
+    rx: "1.5",
+    fill: "var(--accent)",
+    opacity: 0.5 * dmg
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: elX,
+    y: elY,
+    width: elW,
+    height: elH,
+    rx: "1.5",
+    fill: "none",
+    stroke: "var(--ink)",
+    strokeWidth: "0.9",
+    strokeOpacity: "0.55"
+  }), [1, 2].map(k => /*#__PURE__*/React.createElement("line", {
+    key: `ps-${k}`,
+    x1: elX + 3,
+    y1: elY + k * (elH / 3),
+    x2: elX + elW - 3,
+    y2: elY + k * (elH / 3),
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: 0.35 + 0.5 * dmg
+  })), /*#__PURE__*/React.createElement("path", {
+    d: `M${elX + elW},${elY} L${elX + elW - 5},${elY} L${elX + elW},${elY + 5} Z`,
+    fill: "var(--thumb-bg)",
+    opacity: dmg
+  }), /*#__PURE__*/React.createElement("path", {
+    d: `M${elX + elW - 5},${elY} L${elX + elW},${elY + 5}`,
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "0.8",
+    opacity: dmg
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: elCx,
+    cy: elCy,
+    r: 3 + 7 * writeEnv,
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "0.8",
+    opacity: 0.6 * writeEnv
+  }), onto.map((n, i) => {
+    const m = onto[(i + 1) % onto.length];
+    return /*#__PURE__*/React.createElement("line", {
+      key: `oe-${i}`,
+      x1: n[0],
+      y1: n[1],
+      x2: m[0],
+      y2: m[1],
+      stroke: "var(--muted-2)",
+      strokeWidth: "0.4",
+      strokeOpacity: "0.4"
+    });
+  }), onto.map((n, i) => /*#__PURE__*/React.createElement("circle", {
+    key: `on-${i}`,
+    cx: n[0],
+    cy: n[1],
+    r: "1.2",
+    fill: i === 0 ? "var(--accent)" : "var(--muted-2)",
+    opacity: i === 0 ? 0.4 + 0.55 * dmg : 0.5
+  })), [63, 68, 73].map((y, i) => {
+    const w = i === 0 ? 4 + 14 * dmg : [0, 12, 15][i];
+    return /*#__PURE__*/React.createElement("g", {
+      key: `db-${i}`
+    }, /*#__PURE__*/React.createElement("rect", {
+      x: 124,
+      y: y,
+      width: 18,
+      height: 2.4,
+      rx: "0.8",
+      fill: "var(--muted-2)",
+      opacity: "0.18"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: 124,
+      y: y,
+      width: w,
+      height: 2.4,
+      rx: "0.8",
+      fill: i === 0 ? "var(--accent)" : "var(--ink)",
+      opacity: i === 0 ? 0.3 + 0.55 * dmg : 0.4
+    }));
+  }));
 }
 
 // project-specific variants (larger, more elaborate)
