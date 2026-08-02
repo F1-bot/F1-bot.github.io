@@ -47,6 +47,19 @@ const PUBLICATIONS = [
       bib: "dolhopolov2026cmis",
     },
   },
+  {
+    id: "pub-2026-02", selected: true, year: 2026,
+    title: "Agentic AI-Driven Architecture for Dynamic Verification of Infrastructure Digital Twins",
+    authors: ["S. Dolhopolov", "T. Honcharenko", "Y. Dudnyk", "V. Hots", "A. Fesan", "N. Batyr"],
+    venue: "IEEE SIST 2026 — 6th Int. Conf. on Smart Information Systems and Technologies",
+    extra: "pp. 1–7",
+    topic: "bim",
+    thumb: "twin-verify",
+    links: {
+      doi: "https://doi.org/10.1109/SIST61674.2026.11596258",
+      bib: "dolhopolov2026sist",
+    },
+  },
   // ---- 2025 ------------------------------------------------------------
   {
     id: "pub-2025-01", selected: true, year: 2025,
@@ -536,6 +549,11 @@ const NEWS = [
     date: "May 29, 2026",
     text: "Team Heart-Shaped Box won 1st place at the CTF 2026 UA-EE Cyber Shield in Kyiv, held via the Tallinn Mechanism - two days, 55 challenges across eight categories, decided on the final task.",
     url: "https://www.knuba.edu.ua/studenty-knuba-zdobuly-1-miscze-na-mizhnarodnyh-zmagannyah-z-kiberbezpeky-ctf-2026-ua-ee-cyber-shield/",
+  },
+  {
+    date: "May 15, 2026",
+    text: "Published «Agentic AI-Driven Architecture for Dynamic Verification of Infrastructure Digital Twins» at IEEE SIST 2026, the 6th Int. Conf. on Smart Information Systems and Technologies in Astana. A multi-agent architecture continuously verifies BIM digital twins of damaged infrastructure, pairing structural health monitoring with autonomous agents that flag discrepancies and guide recovery.",
+    url: "https://doi.org/10.1109/SIST61674.2026.11596258",
   },
   {
     date: "Apr 28, 2026",

@@ -2825,6 +2825,134 @@ function MaceThumb() {
   );
 }
 
+// twin-verify: paper-themed (IEEE SIST 2026) - an agentic architecture that
+// dynamically verifies an infrastructure digital twin. The twin is a Warren
+// truss (a bridge / infrastructure object) drawn as an accent wireframe. Two
+// autonomous agents patrol above it on a smooth antiphase sweep; each casts a
+// downward verification beam. Members and joints the agents are currently over
+// brighten to "verified"; away from them the twin rests at a calm baseline.
+// One diagonal carries structural damage - a gap in the member with a muted
+// alert ring - which closes and clears to an accent confirmation ring the
+// moment an agent verifies that span (dynamic verification -> recovery).
+// Motion is a single pair of sinusoids: continuous, seamless, no reset flash.
+// Centered on the truss (y=49); connected span left to right.
+function TwinVerifyThumb() {
+  const t = useClock();
+
+  // ---- Infrastructure digital twin: a Warren truss -------------------------
+  const x0 = 14, x1 = 146;         // span endpoints
+  const topY = 39, botY = 59;      // chords
+  const panels = 6;
+  const step = (x1 - x0) / panels;  // 22
+  const bot = Array.from({ length: panels + 1 }, (_, i) => ({ x: x0 + i * step, y: botY }));
+  const top = Array.from({ length: panels },     (_, i) => ({ x: x0 + (i + 0.5) * step, y: topY }));
+
+  const members = [];
+  for (let i = 0; i < panels; i++) members.push([bot[i].x, bot[i].y, bot[i + 1].x, bot[i + 1].y]);        // bottom chord
+  for (let i = 0; i < panels - 1; i++) members.push([top[i].x, top[i].y, top[i + 1].x, top[i + 1].y]);    // top chord
+  for (let i = 0; i < panels; i++) {                                                                       // web diagonals
+    members.push([bot[i].x, bot[i].y, top[i].x, top[i].y]);
+    members.push([top[i].x, top[i].y, bot[i + 1].x, bot[i + 1].y]);
+  }
+  const nodes = [...bot, ...top];
+
+  // ---- Two autonomous agents: smooth antiphase patrol above the twin -------
+  const mid = (x0 + x1) / 2;       // 80
+  const amp = 54;
+  const wsp = 0.5;                  // ~12.6 s period
+  const agentY = 31;
+  const ax0 = mid + amp * Math.sin(wsp * t);
+  const ax1 = mid + amp * Math.sin(wsp * t + Math.PI);
+
+  // verification "coverage" of a point x = how close an agent is right now
+  const sigma = 12;
+  const gauss = (d) => Math.exp(-(d * d) / (2 * sigma * sigma));
+  const cover = (x) => Math.min(1, gauss(x - ax0) + gauss(x - ax1));
+
+  // ---- Structural damage on one central diagonal (top[2] -> bot[3]) --------
+  const dA = top[2], dB = bot[3];
+  const dmx = (dA.x + dB.x) / 2, dmy = (dA.y + dB.y) / 2;   // 74.5, 49
+  const dInt = cover(dmx);
+  const gap = 3.6 * (1 - dInt);                             // closes when verified
+
+  const beam = (ax, ph) => (
+    <g>
+      <line x1={ax} y1={agentY + 3.4} x2={ax} y2={botY}
+            stroke="var(--accent)" strokeWidth="0.6"
+            strokeOpacity="0.22" strokeDasharray="1.5 2.2"
+            strokeDashoffset={-(t * 6)} />
+      <circle cx={ax} cy={agentY} r={4.2 + 0.5 * Math.sin(t * 2 + ph)}
+              fill="none" stroke="var(--accent)" strokeWidth="0.5"
+              strokeOpacity="0.4" />
+      <path d={`M${ax},${agentY - 2.5} L${ax + 2.5},${agentY} L${ax},${agentY + 2.5} L${ax - 2.5},${agentY} Z`}
+            fill="var(--accent)" opacity="0.92" />
+    </g>
+  );
+
+  return (
+    <ThumbFrame>
+      {/* ground + abutments (physical infrastructure grounding) */}
+      <line x1={6} y1={73} x2={154} y2={73}
+            stroke="var(--hairline)" strokeWidth="0.6" />
+      {[x0, x1].map((px, i) => (
+        <g key={`pier-${i}`}>
+          <line x1={px} y1={botY} x2={px} y2={73}
+                stroke="var(--ink)" strokeWidth="1" strokeOpacity="0.45" />
+          <line x1={px - 4} y1={73} x2={px + 4} y2={73}
+                stroke="var(--ink)" strokeWidth="1" strokeOpacity="0.45" />
+        </g>
+      ))}
+
+      {/* truss members - baseline twin + brighten where an agent verifies */}
+      {members.map((m, i) => {
+        const c = cover((m[0] + m[2]) / 2);
+        return (
+          <line key={`m-${i}`} x1={m[0]} y1={m[1]} x2={m[2]} y2={m[3]}
+                stroke="var(--accent)" strokeWidth={0.7 + 0.45 * c}
+                strokeOpacity={0.36 + 0.58 * c} />
+        );
+      })}
+
+      {/* damage break on the central diagonal - punched out of the member */}
+      {gap > 0.35 && (
+        <circle cx={dmx} cy={dmy} r={gap} fill="var(--thumb-bg)" />
+      )}
+      {/* muted alert ring while unverified -> accent confirm ring once verified */}
+      <circle cx={dmx} cy={dmy} r="3.4" fill="none"
+              stroke="var(--muted-2)" strokeWidth="0.7"
+              strokeDasharray="1.4 1.4" strokeOpacity={0.75 * (1 - dInt)} />
+      <circle cx={dmx} cy={dmy} r={2.6 + 1.4 * dInt} fill="none"
+              stroke="var(--accent)" strokeWidth="0.8" strokeOpacity={0.85 * dInt} />
+
+      {/* joints - small twin nodes, brighten with a ring when verified */}
+      {nodes.map((n, i) => {
+        const c = cover(n.x);
+        return (
+          <g key={`n-${i}`}>
+            {c > 0.25 && (
+              <circle cx={n.x} cy={n.y} r={1.8 + 1.2 * c} fill="none"
+                      stroke="var(--accent)" strokeWidth="0.5" strokeOpacity={0.5 * c} />
+            )}
+            <circle cx={n.x} cy={n.y} r={0.9 + 0.5 * c}
+                    fill="var(--accent)" opacity={0.5 + 0.45 * c} />
+          </g>
+        );
+      })}
+
+      {/* structural-health sensors on the deck */}
+      {[bot[1], bot[3], bot[5]].map((s, i) => (
+        <line key={`s-${i}`} x1={s.x} y1={botY + 0.5} x2={s.x} y2={botY + 3}
+              stroke="var(--muted-2)" strokeWidth="0.8"
+              strokeOpacity={0.35 + 0.28 * (0.5 + 0.5 * Math.sin(t * 1.6 + i * 1.7))} />
+      ))}
+
+      {/* the two verifying agents (drawn last, on top) */}
+      {beam(ax0, 0)}
+      {beam(ax1, Math.PI)}
+    </ThumbFrame>
+  );
+}
+
 // project-specific variants (larger, more elaborate)
 function ProjectFieldThumb() { return <FieldThumb />; }
 function ProjectTokensThumb() { return <TokensThumb />; }
@@ -3092,6 +3220,7 @@ const THUMB_COMPONENTS = {
   "hydro-ensemble": HydroEnsembleThumb,
   "xai-multimodal": XaiMultimodalThumb,
   mace: MaceThumb,
+  "twin-verify": TwinVerifyThumb,
   "sensor-graph": SensorGraphThumb,
   "pred-vs-obs": PredVsObsThumb,
   "neuro-phys": NeuroPhysThumb,
