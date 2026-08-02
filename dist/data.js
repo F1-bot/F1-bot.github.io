@@ -516,6 +516,9 @@ const PROJECTS = [{
   links: [{
     label: "Project documentation",
     url: "https://dir.ukrintei.ua/view/rk/bed42e8a9d071b93a28a802f039a03a1"
+  }, {
+    label: "SIST 2026 paper",
+    url: "https://doi.org/10.1109/SIST61674.2026.11596258"
   }],
   thumb: "digital-twin"
 }, {

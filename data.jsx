@@ -443,6 +443,7 @@ const PROJECTS = [
       "A multi-agent AI system for automated dynamic verification and monitoring of digital twins of damaged infrastructure objects. The approach combines deep learning for computer vision and point-cloud analysis with a collaborative multi-agent architecture that autonomously updates BIM/IFC models from heterogeneous photogrammetry and LiDAR data, enabling rapid and objective damage assessment to support Ukraine's reconstruction.",
     links: [
       { label: "Project documentation", url: "https://dir.ukrintei.ua/view/rk/bed42e8a9d071b93a28a802f039a03a1" },
+      { label: "SIST 2026 paper", url: "https://doi.org/10.1109/SIST61674.2026.11596258" },
     ],
     thumb: "digital-twin",
   },
