@@ -3916,6 +3916,384 @@ function TwinVerifyThumb() {
   }));
 }
 
+// glofas-biascorr: paper-themed (Water/MDPI 2026, Honcharenko, Dolhopolov et al.)
+// -- "Explainable Deep Ensemble Bias Correction of GloFAS-ERA5 Streamflow Across
+// Snow-Influenced Transboundary Basins of Central Asia." The global GloFAS-ERA5
+// reanalysis freshet (ink) rides systematically ABOVE the observed gauge truth
+// (muted dashed + gauge dots): a snow-season bias in the Syr/Amu Darya headwaters.
+// Left->right an explainable deep ensemble closes the log-residual - the bold
+// accent corrected line (soft halo + crisp core) is pulled DOWN off the biased
+// curve onto the truth, where a CALIBRATED uncertainty band hugs it (widest
+// through the melt regime, tightest once corrected). Soft vertical regime bands
+// (snow / glacier-melt[accent] / rain) structure the year; accent packets migrate
+// biased->truth; a residual strip below shrinks to ~0 as the gap closes. An
+// abstract snow-water-equivalent source (accumulation ticks, no scenery) and two
+// converging transboundary strands crossing a dashed border feed the left end; a
+// compact ensemble emblem (gradient-boosting tree + LSTM cell + probabilistic band)
+// and a SIGNED, zero-axis SHAP force-plot (top driver SWE in accent) explain it.
+// One 12s master cycle; every quantity is a deterministic, seamless function of t.
+// No text, glyphs, numbers, hex, rgb or randomness.
+const gbSS = (a, b, x) => {
+  const u = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return u * u * (3 - 2 * u);
+};
+const gbBump = (a, b, x) => {
+  const u = (x - a) / (b - a);
+  if (u <= 0 || u >= 1) return 0;
+  const s = Math.sin(Math.PI * u);
+  return s * s;
+};
+const gbFresh = u => {
+  const pk = 0.34;
+  if (u <= pk) {
+    const z = (u - pk) / 0.16;
+    return Math.exp(-0.5 * z * z);
+  }
+  return Math.exp(-(u - pk) / 0.5);
+};
+function GlofasBiasThumb() {
+  const t = useClock();
+  const TAU = Math.PI * 2;
+  const CYCLE = 12;
+  const p = t % CYCLE / CYCLE;
+
+  // ---- hydrograph geometry (x = one snow-year, left -> right) --------------
+  const xL = 24,
+    xR = 150,
+    span = xR - xL;
+  const yBase = 62,
+    scaleY = 28;
+  const xOf = u => xL + u * span;
+  const yOf = d => yBase - d * scaleY;
+  const dObs = u => 0.15 + 0.8 * gbFresh(u); // observed gauge truth
+  const biasOff = u => 0.12 + 0.30 * gbFresh(u); // systematic bias (worst at melt)
+  const dBias = u => dObs(u) + biasOff(u); // biased GloFAS-ERA5 (offset above)
+  const kCorr = u => gbSS(0.05, 0.80, u); // correction takes hold L->R
+  const yObs = u => yOf(dObs(u));
+  const yBias = u => yOf(dBias(u));
+  const yCorr = u => {
+    const b = yBias(u),
+      o = yObs(u);
+    return b + kCorr(u) * (o - b);
+  };
+  const bandH = u => 1.1 + 1.8 * (1 - kCorr(u)) + 1.3 * gbFresh(u); // calibrated half-width
+
+  // ---- sample the three series + the calibrated band ribbon ----------------
+  const N = 64;
+  const biasPts = [],
+    obsPts = [],
+    corrPts = [],
+    up = [],
+    dn = [];
+  for (let i = 0; i <= N; i++) {
+    const u = i / N,
+      x = xOf(u).toFixed(2);
+    biasPts.push(`${x},${yBias(u).toFixed(2)}`);
+    obsPts.push(`${x},${yObs(u).toFixed(2)}`);
+    const yc = yCorr(u);
+    corrPts.push(`${x},${yc.toFixed(2)}`);
+    const h = bandH(u) * (1 + 0.10 * Math.sin(TAU * p + u * 4));
+    up.push(`${x},${(yc - h).toFixed(2)}`);
+    dn.push(`${x},${(yc + h).toFixed(2)}`);
+  }
+  const bandPath = `M${up.join(" L")} L${dn.reverse().join(" L")} Z`;
+
+  // ---- interpretable regime bands (snow / glacier-melt / rain) -------------
+  const regimes = [{
+    u0: 0.00,
+    u1: 0.30,
+    fill: "var(--ink)",
+    base: 0.05
+  }, {
+    u0: 0.30,
+    u1: 0.62,
+    fill: "var(--accent)",
+    base: 0.08
+  },
+  // melt: where bias bites
+  {
+    u0: 0.62,
+    u1: 1.00,
+    fill: "var(--ink)",
+    base: 0.045
+  }];
+
+  // ---- correction packets migrating biased -> truth -----------------------
+  const packU = [0.10, 0.24, 0.40, 0.56, 0.72];
+  // ---- residual strip: remaining error, shrinking to ~0 -------------------
+  const resN = 15;
+  // ---- SHAP signed force-plot (upper-right; top driver SWE in accent) ------
+  const zx = 126;
+  const shap = [{
+    y: 11,
+    sign: 1,
+    base: 17,
+    col: "var(--accent)",
+    op: 0.85
+  }, {
+    y: 16,
+    sign: -1,
+    base: 11,
+    col: "var(--ink)",
+    op: 0.5
+  }, {
+    y: 21,
+    sign: 1,
+    base: 8,
+    col: "var(--ink)",
+    op: 0.45
+  }, {
+    y: 26,
+    sign: -1,
+    base: 6,
+    col: "var(--muted-2)",
+    op: 0.5
+  }];
+  // ---- transboundary downstream drift (seamless: 4 dash-periods / cycle) ----
+  const drift = -(p * 24);
+  return /*#__PURE__*/React.createElement(ThumbFrame, null, regimes.map((r, k) => /*#__PURE__*/React.createElement("rect", {
+    key: `rg-${k}`,
+    x: xOf(r.u0),
+    y: 22,
+    width: (r.u1 - r.u0) * span,
+    height: 40,
+    fill: r.fill,
+    opacity: r.base * (1 + 0.25 * Math.sin(TAU * p + k * 2))
+  })), [0.30, 0.62].map((u, i) => /*#__PURE__*/React.createElement("line", {
+    key: `rd-${i}`,
+    x1: xOf(u),
+    y1: 22,
+    x2: xOf(u),
+    y2: 62,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.4",
+    strokeDasharray: "1.5 2.5",
+    strokeOpacity: "0.28"
+  })), [0, 1, 2].map(i => /*#__PURE__*/React.createElement("line", {
+    key: `hz-${i}`,
+    x1: 6,
+    y1: 12 + i * 4,
+    x2: 23,
+    y2: 14 + i * 4,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.35",
+    strokeOpacity: "0.22"
+  })), /*#__PURE__*/React.createElement("line", {
+    x1: 6,
+    y1: 27,
+    x2: 23,
+    y2: 27,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.4"
+  }), [0, 1, 2, 3].map(i => {
+    const h = 5 + 4 * (0.5 + 0.5 * Math.sin(TAU * p + i * 1.5));
+    return /*#__PURE__*/React.createElement("line", {
+      key: `sw-${i}`,
+      x1: 8 + i * 4,
+      y1: 27,
+      x2: 8 + i * 4,
+      y2: 27 - h,
+      stroke: "var(--accent)",
+      strokeWidth: "1.4",
+      strokeOpacity: "0.5",
+      strokeLinecap: "round"
+    });
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M4,70 Q15,61 24,52",
+    fill: "none",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.8",
+    strokeOpacity: "0.4",
+    strokeLinecap: "round"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M8,30 Q18,44 24,52",
+    fill: "none",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.8",
+    strokeOpacity: "0.4",
+    strokeLinecap: "round"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: 13,
+    y1: 33,
+    x2: 11,
+    y2: 68,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeDasharray: "2 3",
+    strokeOpacity: "0.4"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M4,70 Q15,61 24,52",
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.28",
+    strokeDasharray: "2 4",
+    strokeDashoffset: drift
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M8,30 Q18,44 24,52",
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.28",
+    strokeDasharray: "2 4",
+    strokeDashoffset: drift
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: xL,
+    y1: 93,
+    x2: xR,
+    y2: 93,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.4"
+  }), Array.from({
+    length: resN
+  }).map((_, i) => {
+    const u = (i + 0.5) / resN;
+    const gap = (yBias(u) - yObs(u)) * (1 - kCorr(u));
+    const h = Math.max(0, gap * 0.72 * (0.9 + 0.1 * Math.sin(TAU * p + i * 0.6)));
+    const bw = span / resN - 2;
+    return /*#__PURE__*/React.createElement("rect", {
+      key: `res-${i}`,
+      x: xOf(u) - bw / 2,
+      y: 93 - h,
+      width: bw,
+      height: h,
+      fill: "var(--ink)",
+      opacity: "0.28"
+    });
+  }), /*#__PURE__*/React.createElement("path", {
+    d: bandPath,
+    fill: "var(--accent)",
+    opacity: "0.14"
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: obsPts.join(" "),
+    fill: "none",
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.9",
+    strokeOpacity: "0.55",
+    strokeDasharray: "2.4 1.8"
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: biasPts.join(" "),
+    fill: "none",
+    stroke: "var(--ink)",
+    strokeWidth: "1",
+    strokeOpacity: "0.5"
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: corrPts.join(" "),
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "3",
+    strokeOpacity: "0.12",
+    strokeLinecap: "round"
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: corrPts.join(" "),
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "1.6",
+    strokeLinecap: "round"
+  }), [0.14, 0.40, 0.66, 0.90].map((u, i) => /*#__PURE__*/React.createElement("circle", {
+    key: `g-${i}`,
+    cx: xOf(u),
+    cy: yObs(u),
+    r: "1.5",
+    fill: "var(--muted-2)",
+    opacity: 0.45 + 0.25 * Math.sin(TAU * p + i * 1.3)
+  })), packU.map((u, i) => {
+    const sub = ((p * 3 + i * 0.19) % 1 + 1) % 1;
+    const y = yBias(u) + sub * (yObs(u) - yBias(u));
+    return /*#__PURE__*/React.createElement("circle", {
+      key: `pk-${i}`,
+      cx: xOf(u),
+      cy: y,
+      r: "1.3",
+      fill: "var(--accent)",
+      opacity: 0.8 * gbBump(0, 1, sub)
+    });
+  }), /*#__PURE__*/React.createElement("g", {
+    stroke: "var(--ink)",
+    strokeWidth: "0.6",
+    strokeOpacity: "0.5"
+  }, /*#__PURE__*/React.createElement("line", {
+    x1: 50,
+    y1: 70,
+    x2: 46,
+    y2: 76
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: 50,
+    y1: 70,
+    x2: 54,
+    y2: 76
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: 46,
+    y1: 76,
+    x2: 44,
+    y2: 80
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: 46,
+    y1: 76,
+    x2: 48,
+    y2: 80
+  })), /*#__PURE__*/React.createElement("circle", {
+    cx: 50,
+    cy: 70,
+    r: "1.2",
+    fill: "var(--accent)",
+    opacity: 0.5 + 0.35 * Math.sin(TAU * p)
+  }), [[46, 76], [54, 76], [44, 80], [48, 80]].map((n, i) => /*#__PURE__*/React.createElement("circle", {
+    key: `tn-${i}`,
+    cx: n[0],
+    cy: n[1],
+    r: "0.9",
+    fill: "var(--ink)",
+    opacity: "0.45"
+  })), /*#__PURE__*/React.createElement("rect", {
+    x: 66,
+    y: 70,
+    width: 16,
+    height: 9,
+    rx: "2",
+    fill: "none",
+    stroke: "var(--ink)",
+    strokeWidth: "0.7",
+    strokeOpacity: "0.5"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: 74,
+    cy: 74.5,
+    r: "1.6",
+    fill: "var(--accent)",
+    opacity: 0.45 + 0.4 * Math.sin(TAU * p + 2)
+  }), [3, 5, 7].map((r, j) => /*#__PURE__*/React.createElement("path", {
+    key: `ab-${j}`,
+    d: `M ${94 - r} 79 A ${r} ${r} 0 0 0 ${94 + r} 79`,
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "0.7",
+    strokeOpacity: (0.5 - 0.1 * j) * (0.6 + 0.4 * Math.sin(TAU * p - j))
+  })), /*#__PURE__*/React.createElement("line", {
+    x1: zx,
+    y1: 8,
+    x2: zx,
+    y2: 30,
+    stroke: "var(--muted-2)",
+    strokeWidth: "0.5",
+    strokeOpacity: "0.4"
+  }), shap.map((b, i) => {
+    const len = b.base * (0.85 + 0.15 * Math.sin(TAU * p + i * 1.3));
+    const bx = b.sign > 0 ? zx : zx - len;
+    return /*#__PURE__*/React.createElement("rect", {
+      key: `sh-${i}`,
+      x: bx,
+      y: b.y,
+      width: len,
+      height: "2.6",
+      rx: "0.6",
+      fill: b.col,
+      opacity: b.op
+    });
+  }));
+}
+
 // project-specific variants (larger, more elaborate)
 function ProjectFieldThumb() {
   return /*#__PURE__*/React.createElement(FieldThumb, null);
@@ -4237,6 +4615,7 @@ const THUMB_COMPONENTS = {
   "xai-multimodal": XaiMultimodalThumb,
   mace: MaceThumb,
   "twin-verify": TwinVerifyThumb,
+  "glofas-biascorr": GlofasBiasThumb,
   "sensor-graph": SensorGraphThumb,
   "pred-vs-obs": PredVsObsThumb,
   "neuro-phys": NeuroPhysThumb,

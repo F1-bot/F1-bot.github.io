@@ -210,7 +210,11 @@ function Publications() {
                 {p.links.doi && <a href={p.links.doi} className="pill">DOI</a>}
                 {p.links.pdf && <a href={p.links.pdf} className="pill">PDF</a>}
                 {p.links.code && <a href={p.links.code} className="pill">Code</a>}
-                {p.links.data && <a href={p.links.data} className="pill">Data</a>}
+                {p.links.data && (Array.isArray(p.links.data)
+                  ? p.links.data.map((d, i) => (
+                      <a key={`data-${i}`} href={d.url} className="pill">{d.label}</a>
+                    ))
+                  : <a href={p.links.data} className="pill">Data</a>)}
                 {p.links.bib && <BibButton bibKey={p.links.bib} />}
               </div>
             </div>

@@ -247,10 +247,14 @@ function Publications() {
   }, "PDF"), p.links.code && /*#__PURE__*/React.createElement("a", {
     href: p.links.code,
     className: "pill"
-  }, "Code"), p.links.data && /*#__PURE__*/React.createElement("a", {
+  }, "Code"), p.links.data && (Array.isArray(p.links.data) ? p.links.data.map((d, i) => /*#__PURE__*/React.createElement("a", {
+    key: `data-${i}`,
+    href: d.url,
+    className: "pill"
+  }, d.label)) : /*#__PURE__*/React.createElement("a", {
     href: p.links.data,
     className: "pill"
-  }, "Data"), p.links.bib && /*#__PURE__*/React.createElement(BibButton, {
+  }, "Data")), p.links.bib && /*#__PURE__*/React.createElement(BibButton, {
     bibKey: p.links.bib
   })))))));
 }

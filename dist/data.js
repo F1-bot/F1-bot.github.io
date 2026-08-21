@@ -61,6 +61,38 @@ const LINKS = [{
 const PUBLICATIONS = [
 // ---- 2026 ------------------------------------------------------------
 {
+  id: "pub-2026-03",
+  selected: true,
+  year: 2026,
+  title: "Explainable Deep Ensemble Bias Correction of GloFAS-ERA5 Streamflow Across Snow-Influenced Transboundary Basins of Central Asia",
+  authors: ["T. Honcharenko", "S. Dolhopolov", "A. Neftissov", "I. Kazambayev", "A. Aubakirova", "L. Kirichenko", "O. Kuchanskyi"],
+  venue: "Water (MDPI)",
+  extra: "Vol. 18(16), 2026 · Q1 · IF 3.0 · CiteScore 6.0",
+  quartile: "Q1",
+  topic: "ml",
+  thumb: "glofas-biascorr",
+  links: {
+    doi: "https://doi.org/10.3390/w18162055",
+    code: "https://github.com/F1-bot/Explainable_Deep-Ensemble_Bias_Correction_of_GloFAS-ERA5",
+    data: [{
+      label: "ERA5",
+      url: "https://cds.climate.copernicus.eu/"
+    }, {
+      label: "GloFAS",
+      url: "https://ewds.climate.copernicus.eu/"
+    }, {
+      label: "Climate indices",
+      url: "https://psl.noaa.gov/data/climateindices/list/"
+    }, {
+      label: "CA-discharge",
+      url: "https://zenodo.org/records/8147591"
+    }, {
+      label: "Zenodo",
+      url: "https://zenodo.org/records/21325905"
+    }],
+    bib: "honcharenko2026water"
+  }
+}, {
   id: "pub-2026-01",
   selected: true,
   year: 2026,
@@ -586,6 +618,10 @@ const EDUCATION = [{
 
 // News - compact with external links.
 const NEWS = [{
+  date: "Aug 21, 2026",
+  text: "Published «Explainable Deep Ensemble Bias Correction of GloFAS-ERA5 Streamflow» in Water (MDPI, Q1). A calibrated deep ensemble (gradient boosting + LSTM) corrects the GloFAS-ERA5 reanalysis at 135 gauges across the snow-fed transboundary Syr Darya and Amu Darya basins of Central Asia, with SHAP-based attributions and interpretable snow, melt and rain regimes.",
+  url: "https://doi.org/10.3390/w18162055"
+}, {
   date: "Jul 4, 2026",
   text: "Published «MACE: Modular Adaptive Code Engine» in the CMIS 2026 proceedings (CEUR-WS, Vol. 4220). Context-aware LoRA expert routing, hierarchical retrieval-augmented generation, and a multi-signal verification loop raise code-generation correctness from 84% to 96% while cutting generation time by 35%.",
   url: "https://ceur-ws.org/Vol-4220/paper17.pdf"
